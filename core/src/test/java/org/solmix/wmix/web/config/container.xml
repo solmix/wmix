@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:wmix="http://www.solmix.org/schema/wmix"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.solmix.org/schema/wmix http://www.solmix.org/schema/wmix/wmix.xsd ">
+	<configuration productionMode="true"
+		xmlns="http://www.solmix.org/schema/wmix">
+		<processor>
+			<bean class="org.solmix.wmix.web.config.TestProcessor" xmlns="http://www.springframework.org/schema/beans"/>
+		</processor>
+		<faultProcessor>
+			<bean class="org.solmix.wmix.web.config.TestProcessor" xmlns="http://www.springframework.org/schema/beans"/>
+		</faultProcessor>
+	</configuration>
+</beans>
