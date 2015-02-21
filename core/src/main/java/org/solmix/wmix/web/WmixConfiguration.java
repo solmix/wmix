@@ -45,10 +45,12 @@ public interface WmixConfiguration {
 
         Boolean isAutoDiscovery();
 
-        String getDiscoveryLocation();
-
+        String getDiscoveryLocationPattern();
+        
         String getDefaultComponent();
+        Class<?> getDefaultControllerClass();
 
+        Class<?> getRootControllerClass();
         Map<String, ComponentConfig> getComponents();
 
         RootController getRootController();

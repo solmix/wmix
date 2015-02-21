@@ -18,13 +18,19 @@
  */
 package org.solmix.wmix.web.config;
 
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.solmix.commons.util.Assert;
+import org.solmix.commons.util.DOMUtils;
 import org.solmix.commons.util.StringUtils;
 import org.solmix.runtime.support.spring.AbstractBeanDefinitionParser;
 import org.solmix.wmix.web.WmixConfiguration;
+import org.solmix.wmix.web.config.WmixConfigurationImpl.ComponentConfigImpl;
+import org.solmix.wmix.web.config.WmixConfigurationImpl.ComponentsConfigImpl;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
+import org.springframework.beans.factory.support.ManagedMap;
 import org.springframework.beans.factory.xml.BeanDefinitionParser;
 import org.springframework.beans.factory.xml.ParserContext;
 import org.w3c.dom.Element;
@@ -62,6 +68,33 @@ implements BeanDefinitionParser {
         Element e, String name) {
         if("processor".equals(name)||"faultProcessor".equals(name)){
            firstChildAsProperty(e, ctx, bean, name);
+        }else if("components".equals(name)){
+            BeanDefinitionBuilder components = BeanDefinitionBuilder.genericBeanDefinition(ComponentsConfigImpl.class);
+            parseAttributes(e, ctx, components);
+            List<Element> els= DOMUtils.getChildrenWithName(e, e.getNamespaceURI(), "rootController");
+            if(els!=null&&els.size()==1){
+                firstChildAsProperty(els.get(0), ctx, components, "rootController");
+            }
+            ManagedMap<String, AbstractBeanDefinition> compMap = new ManagedMap<String, AbstractBeanDefinition>();
+
+            compMap.setSource(ctx.getReaderContext().extractSource(e));
+
+            List<Element> comps= DOMUtils.getChildrenWithName(e, e.getNamespaceURI(), "component");
+            if(comps!=null){
+                for(Element comp:comps){
+                    String cname = Assert.assertNotNull(comp.getAttribute("name"),"no component name");
+                    BeanDefinitionBuilder component = BeanDefinitionBuilder.genericBeanDefinition(ComponentConfigImpl.class);
+                    parseAttributes(comp, ctx, component);
+                    List<Element> cls= DOMUtils.getChildrenWithName(comp, comp.getNamespaceURI(), "controller");
+                    if(cls!=null&&cls.size()==1){
+                        firstChildAsProperty(cls.get(0), ctx, component, "controller");
+                    }
+                    compMap.put(cname, component.getBeanDefinition());
+                }
+                components.addPropertyValue("components", compMap);
+            }
+            
+            bean.addPropertyValue("componentsConfig", components.getBeanDefinition());
         }
     }
     

@@ -19,10 +19,20 @@
 
 package org.solmix.wmix.web.servlet;
 
+import javax.servlet.FilterChain;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.solmix.commons.util.ServletUtils;
+import org.solmix.wmix.test.TestUtil;
 import org.solmix.wmix.web.AbstractTests;
+import org.solmix.wmix.web.util.RequestURIFilter;
+
+import com.meterware.servletunit.InvocationContext;
 
 /**
  * 
@@ -37,13 +47,51 @@ public class WmixFilterTest extends AbstractTests {
     @Before
     public void before() throws Exception {
         prepareWebClient(null, "/myapps");
-       filter =(WmixFilter)client.newInvocation("http://localhost/myapps/app1").getFilter();
+        InvocationContext icc = client.newInvocation("http://127.0.0.1/myapps/app1");
+        filter = (WmixFilter) icc.getFilter();
         Assert.assertNotNull(filter);
-        
     }
-    
+
     @Test
-    public void test(){
-        
+    public void isExcluded() throws Exception {
+        filter.setExcludes("/aa , *.jpg");
+        assertExcluded(true, "/aa/bb");
+    }
+    private void assertExcluded(boolean excluded, String requestURI) throws Exception {
+        assertExcluded(excluded, requestURI, false);
+    }
+    private void assertExcluded(boolean excluded, String requestURI, boolean internal) throws Exception {
+        RequestURIFilter excludes = TestUtil.getFieldValue(filter, "excludeFilter", RequestURIFilter.class);
+
+        HttpServletRequest request = EasyMock.createMock(HttpServletRequest.class);
+        HttpServletResponse response = EasyMock.createMock(HttpServletResponse.class);
+        FilterChain filterChain = EasyMock.createMock(FilterChain.class);
+
+        // 不会调用getContextPath和getRequestURI
+        EasyMock.expect(request.getServletPath()).andReturn(requestURI).anyTimes();
+        EasyMock.expect(request.getPathInfo()).andReturn(null).anyTimes();
+
+        if (excluded && !internal) {
+            filterChain.doFilter(request, response);
+        }
+
+        EasyMock.replay(request, response, filterChain);
+
+        if (internal) {
+            Assert.assertFalse(filter.isExcluded(ServletUtils.getResourcePath(request)));
+        } else {
+            Assert.assertEquals(excluded, excludes.matches(requestURI));
+        }
+
+        if (excluded && !internal) {
+            filter.doFilter(request, response, filterChain); // 对excluded request调用doFilter，应该立即返回
+            Assert.assertTrue(filter.isExcluded(ServletUtils.getResourcePath(request)));
+        }
+
+        EasyMock.verify(request, response, filterChain);
+    }
+    @Test
+    public void test() {
+
     }
 }

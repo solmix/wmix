@@ -18,8 +18,15 @@
  */
 package org.solmix.wmix.web.config;
 
+import java.util.Map;
+
+import org.solmix.commons.util.StringUtils;
 import org.solmix.runtime.exchange.Processor;
+import org.solmix.wmix.web.Controller;
+import org.solmix.wmix.web.RootController;
 import org.solmix.wmix.web.WmixConfiguration;
+import org.solmix.wmix.web.support.ControllerImpl;
+import org.solmix.wmix.web.support.RootControllerImpl;
 
 
 /**
@@ -33,6 +40,7 @@ public class WmixConfigurationImpl implements WmixConfiguration {
     private boolean productionMode;
     private Processor processor;
     private Processor faultProcessor;
+    private ComponentsConfig componentsConfig;
     
     @Override
     public Processor getProcessor() {
@@ -66,8 +74,127 @@ public class WmixConfigurationImpl implements WmixConfiguration {
     
     @Override
     public ComponentsConfig getComponentsConfig() {
-        // TODO Auto-generated method stub
-        return null;
+        return componentsConfig;
+    }
+    
+    
+    /**   */
+    public void setComponentsConfig(ComponentsConfig componentsConfig) {
+        this.componentsConfig = componentsConfig;
     }
 
+    public static class ComponentsConfigImpl implements ComponentsConfig {
+        private Boolean                      autoDiscovery;
+        private String                       discoveryLocationPattern;
+        private String                       defaultComponent;
+        private Class<?>                     defaultControllerClass;
+        private Class<?>                     rootControllerClass;
+        private Map<String, ComponentConfig> components;
+        private RootController           rootController;
+        @Override
+        public Boolean isAutoDiscovery() {
+            return autoDiscovery==null?true:autoDiscovery;
+        }
+        
+        /**   */
+        public void setAutoDiscovery(Boolean autoDiscover) {
+            this.autoDiscovery = autoDiscover;
+        }
+
+
+        @Override
+        public String getDiscoveryLocationPattern() {
+            return discoveryLocationPattern==null? "/WEB-INF/wmix-*.xml":discoveryLocationPattern;
+        }
+
+        
+        /**   */
+        public void setDiscoveryLocationPattern(String discoveryLocationPattern) {
+            this.discoveryLocationPattern = StringUtils.trimToNull(discoveryLocationPattern);
+        }
+
+       
+        @Override
+        public String getDefaultComponent() {
+            return defaultComponent;
+        }
+
+       
+        @Override
+        public Map<String, ComponentConfig> getComponents() {
+            return components;
+        }
+
+       
+        @Override
+        public RootController getRootController() {
+            return rootController;
+        }
+
+        
+        /**   */
+        public void setDefaultComponent(String defaultComponent) {
+            this.defaultComponent = defaultComponent;
+        }
+
+        
+        /**   */
+        public void setComponents(Map<String, ComponentConfig> components) {
+            this.components = components;
+        }
+        public Class<?> getDefaultControllerClass() {
+            return defaultControllerClass == null ? ControllerImpl.class : defaultControllerClass;
+        }
+
+        public void setDefaultControllerClass(Class<?> defaultControllerClass) {
+            this.defaultControllerClass = defaultControllerClass;
+        }
+
+        public Class<?> getRootControllerClass() {
+            return rootControllerClass == null ? RootControllerImpl.class : rootControllerClass;
+        }
+
+        public void setRootControllerClass(Class<?> rootControllerClass) {
+            this.rootControllerClass = rootControllerClass;
+        }
+
+        
+        /**   */
+        public void setRootController(RootController rootController) {
+            this.rootController = rootController;
+        }
+
+    }
+    public static class ComponentConfigImpl implements ComponentConfig {
+        private String         name;
+        private String         path;
+        private Controller controller;
+
+        @Override
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = StringUtils.trimToNull(name);
+        }
+
+        @Override
+        public String getPath() {
+            return path;
+        }
+
+        public void setPath(String path) {
+            this.path = StringUtils.trimToNull(path);
+        }
+
+        @Override
+        public Controller getController() {
+            return controller;
+        }
+
+        public void setController(Controller controller) {
+            this.controller = controller;
+        }
+    }
 }

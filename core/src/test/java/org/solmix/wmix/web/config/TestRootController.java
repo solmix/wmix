@@ -16,20 +16,29 @@
  * http://www.gnu.org/licenses/ 
  * or see the FSF site: http://www.fsf.org. 
  */
-package org.solmix.wmix.web;
+package org.solmix.wmix.web.config;
+
+import org.solmix.wmix.web.Components;
+import org.solmix.wmix.web.RootController;
 
 
 /**
  * 
  * @author solmix.f@gmail.com
- * @version $Id$  2015年2月1日
+ * @version $Id$  2015年2月21日
  */
 
-public interface Controller {
+public class TestRootController implements RootController {
 
     /**
-     * @param componentImpl
+     * {@inheritDoc}
+     * 
+     * @see org.solmix.wmix.web.RootController#init(org.solmix.wmix.web.Components)
      */
-    void init(Component component);
+    @Override
+    public void init(Components components) {
+        // TODO Auto-generated method stub
+        
+    }
 
 }

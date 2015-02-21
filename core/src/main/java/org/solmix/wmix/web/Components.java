@@ -18,9 +18,7 @@
  */
 package org.solmix.wmix.web;
 
-import java.util.Set;
-
-import org.springframework.web.context.WebApplicationContext;
+import org.solmix.runtime.Container;
 
 
 /**
@@ -29,9 +27,9 @@ import org.springframework.web.context.WebApplicationContext;
  * @version $Id$  2015年2月1日
  */
 
-public interface Components {
+public interface Components extends Iterable<Component>{
 
-    Set<String> getComponentsName();
+    String[] getComponentNames();
     
     Component getComponent(String name);
     
@@ -40,9 +38,9 @@ public interface Components {
     
     Component matchedComponent(String path);
     
-    RootController getrRootController();
+    RootController getRootController();
     
-    WmixConfiguration getComponentConfiguration();
+    WmixConfiguration getParentWmixConfiguration();
     
-    WebApplicationContext getParentWebApplicationContext();
+    Container getParentContainer();
 }

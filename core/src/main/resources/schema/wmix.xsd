@@ -8,11 +8,11 @@
 	<xsd:element name="configuration">
 		<xsd:complexType>
 			<xsd:all>
-				<xsd:element name="components" type="componentsType" minOccurs="0"/>
 				<xsd:element name="processor" type="xsd:anyType" minOccurs="0"/>
 				<xsd:element name="faultProcessor" type="xsd:anyType" minOccurs="0"/>
 				<xsd:element name="properties" type="beans:mapType" minOccurs="0"/>
-			</xsd:all>
+                <xsd:element name="components" type="componentsType" minOccurs="0" />
+            </xsd:all>
 			<xsd:attribute name="productionMode" type="xsd:boolean"/>
 
 		</xsd:complexType>
@@ -20,13 +20,15 @@
 
 
 	<xsd:complexType name="componentsType">
-		<xsd:sequence>
-			<xsd:element name="component" type="componentType"	minOccurs="0" maxOccurs="unbounded"/>
-			<xsd:element name="rootController" type="xsd:anyType" minOccurs="0"/>
+        <xsd:sequence>
+			<xsd:element name="component" type="componentType" minOccurs="0" maxOccurs="unbounded" />
+			<xsd:element name="rootController" type="xsd:anyType" minOccurs="0" />
 		</xsd:sequence>
-		<xsd:attribute name="autoDiscovery" type="xsd:boolean"/>
-		<xsd:attribute name="discoveryLocation" type="xsd:string"/>
-		<xsd:attribute name="defaultComponent" type="xsd:string"/>
+		<xsd:attribute name="autoDiscovery" type="xsd:boolean" />
+		<xsd:attribute name="discoveryLocationPattern"
+			type="xsd:string" />
+		<xsd:attribute name="defaultComponent" type="xsd:string" />
+		<xsd:attribute name="defaultControllerClass" type="xsd:string"></xsd:attribute>
 	</xsd:complexType>
 
 	<xsd:complexType name="componentType">

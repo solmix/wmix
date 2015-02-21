@@ -19,11 +19,26 @@
 package org.solmix.wmix.web;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintWriter;
 import java.net.URI;
+import java.net.URL;
+import java.net.URLConnection;
 
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
+import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.IOUtils;
+import org.solmix.commons.util.ServletUtils;
 import org.solmix.commons.util.StringUtils;
 import org.solmix.wmix.test.TestEnvStatic;
 
@@ -94,6 +109,47 @@ public abstract class AbstractTests {
                 return super.getQueryString();
             } else {
                 return overrideQueryString;
+            }
+        }
+    }
+    public static class JavaScriptFilter implements Filter {
+        @Override
+        public void init(FilterConfig filterConfig) throws ServletException {
+        }
+
+        @Override
+        public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException,
+                                                                                                         ServletException {
+            if (!((HttpServletRequest) request).getRequestURI().endsWith("scriptaculous.js")) {
+                chain.doFilter(request, response);
+            }
+        }
+
+        @Override
+        public void destroy() {
+        }
+    }
+    public static class ResourceServlet extends HttpServlet {
+        private static final long serialVersionUID = -5288195741719029071L;
+
+        @Override
+        protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+            String path = ServletUtils.getResourcePath(req);
+
+            if ("".equals(path) || "/".equals(path)) {
+                resp.setContentType("text/plain");
+                PrintWriter out = resp.getWriter();
+
+                out.print("Homepage");
+                out.flush();
+            } else {
+                URL resource = getServletContext().getResource(path);
+                URLConnection conn = resource.openConnection();
+
+                resp.setContentType(conn.getContentType());
+                InputStream in = conn.getInputStream();
+                IOUtils.copy(in, resp.getOutputStream());
+                in.close();
             }
         }
     }

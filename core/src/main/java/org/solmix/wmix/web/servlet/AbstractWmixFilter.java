@@ -59,7 +59,7 @@ import org.springframework.web.context.support.ServletContextResourceLoader;
  * @version $Id$ 2015年1月30日
  */
 
-public class AbstractWmixFilter implements Filter {
+public abstract class AbstractWmixFilter implements Filter {
 
     protected final Logger LOG = LoggerFactory.getLogger(getClass());
 
@@ -104,6 +104,8 @@ public class AbstractWmixFilter implements Filter {
 
     }
 
+    protected abstract void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
+            throws IOException, ServletException;
     @Override
     public void init(FilterConfig config) throws ServletException {
         filterConfig = config;

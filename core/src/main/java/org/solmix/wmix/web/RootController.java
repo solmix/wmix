@@ -27,4 +27,5 @@ package org.solmix.wmix.web;
 
 public interface RootController {
 
+    void init(Components components);
 }
