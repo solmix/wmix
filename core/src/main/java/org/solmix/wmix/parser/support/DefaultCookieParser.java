@@ -46,16 +46,16 @@ public class DefaultCookieParser extends AbstractValueParser implements CookiePa
         this.response= response;
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Number of Cookies " + cookies.length);
+            if (LOG.isTraceEnabled()) {
+                LOG.trace("Number of Cookies " + cookies.length);
             }
 
             for (Cookie cookie : cookies) {
                 String name = cookie.getName();
                 String value = cookie.getValue();
 
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Adding " + name + " = " + value);
+                if (LOG.isTraceEnabled()) {
+                    LOG.trace("Adding " + name + " = " + value);
                 }
 
                 add(name, value);
