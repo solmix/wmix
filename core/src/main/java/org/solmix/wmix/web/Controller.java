@@ -18,8 +18,12 @@
  */
 package org.solmix.wmix.web;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 
 /**
+ * 组件控制器
  * 
  * @author solmix.f@gmail.com
  * @version $Id$  2015年2月1日
@@ -31,5 +35,6 @@ public interface Controller {
      * @param componentImpl
      */
     void init(Component component);
-
+    
+    boolean service(HttpServletRequest request,HttpServletResponse response) throws Exception;
 }

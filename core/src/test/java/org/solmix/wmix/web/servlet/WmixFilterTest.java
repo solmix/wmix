@@ -28,8 +28,10 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.solmix.commons.util.ServletUtils;
-import org.solmix.wmix.test.TestUtil;
+import org.solmix.runtime.ContainerFactory;
+import org.solmix.wmix.test.TestUtils;
 import org.solmix.wmix.web.AbstractTests;
+import org.solmix.wmix.web.Component;
 import org.solmix.wmix.web.util.RequestURIFilter;
 
 import com.meterware.servletunit.InvocationContext;
@@ -51,23 +53,22 @@ public class WmixFilterTest extends AbstractTests {
         filter = (WmixFilter) icc.getFilter();
         Assert.assertNotNull(filter);
     }
-
     @Test
     public void isExcluded() throws Exception {
         filter.setExcludes("/aa , *.jpg");
+        ContainerFactory.getThreadDefaultContainer().getExtension(Component.class);
         assertExcluded(true, "/aa/bb");
     }
     private void assertExcluded(boolean excluded, String requestURI) throws Exception {
         assertExcluded(excluded, requestURI, false);
     }
     private void assertExcluded(boolean excluded, String requestURI, boolean internal) throws Exception {
-        RequestURIFilter excludes = TestUtil.getFieldValue(filter, "excludeFilter", RequestURIFilter.class);
+        RequestURIFilter excludes = TestUtils.getFieldValue(filter, "excludeFilter", RequestURIFilter.class);
 
         HttpServletRequest request = EasyMock.createMock(HttpServletRequest.class);
         HttpServletResponse response = EasyMock.createMock(HttpServletResponse.class);
         FilterChain filterChain = EasyMock.createMock(FilterChain.class);
 
-        // 不会调用getContextPath和getRequestURI
         EasyMock.expect(request.getServletPath()).andReturn(requestURI).anyTimes();
         EasyMock.expect(request.getPathInfo()).andReturn(null).anyTimes();
 
@@ -84,7 +85,7 @@ public class WmixFilterTest extends AbstractTests {
         }
 
         if (excluded && !internal) {
-            filter.doFilter(request, response, filterChain); // 对excluded request调用doFilter，应该立即返回
+            filter.doFilter(request, response, filterChain); 
             Assert.assertTrue(filter.isExcluded(ServletUtils.getResourcePath(request)));
         }
 

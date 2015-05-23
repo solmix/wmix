@@ -25,8 +25,8 @@ import org.solmix.runtime.exchange.Processor;
 import org.solmix.wmix.web.Controller;
 import org.solmix.wmix.web.RootController;
 import org.solmix.wmix.web.WmixConfiguration;
-import org.solmix.wmix.web.support.ControllerImpl;
 import org.solmix.wmix.web.support.RootControllerImpl;
+import org.solmix.wmix.web.support.WmixDefaultController;
 
 
 /**
@@ -143,7 +143,7 @@ public class WmixConfigurationImpl implements WmixConfiguration {
             this.components = components;
         }
         public Class<?> getDefaultControllerClass() {
-            return defaultControllerClass == null ? ControllerImpl.class : defaultControllerClass;
+            return defaultControllerClass == null ? WmixDefaultController.class : defaultControllerClass;
         }
 
         public void setDefaultControllerClass(Class<?> defaultControllerClass) {

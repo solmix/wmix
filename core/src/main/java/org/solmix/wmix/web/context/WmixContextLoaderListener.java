@@ -91,12 +91,7 @@ public class WmixContextLoaderListener extends ContextLoaderListener {
     public void contextInitialized(ServletContextEvent event) {
         super.contextInitialized(event);
         servletContext = event.getServletContext();
-        String root = servletContext.getRealPath("/");
-        if (LOG.isInfoEnabled()) {
-            LOG.info("Initial Web context,used path:" + root
-                + " As [solmix.base]");
-        }
-        System.setProperty("solmix.base", root);
+        
         parentSpringContext = ContextLoader.getCurrentWebApplicationContext();
         if (parentSpringContext == null) {
             String msg = "Can't found spring WebApplicationContext";
@@ -105,11 +100,19 @@ public class WmixContextLoaderListener extends ContextLoaderListener {
         }
         SpringContainerFactory factory = new SpringContainerFactory(parentSpringContext);
         Container parent = factory.createContainer();
+        String root = servletContext.getRealPath("/");
+        if (LOG.isInfoEnabled()) {
+             parent.setProperty("solmix.base", root);
+            LOG.info("Initial Web context,used path:" + root + " As [solmix.base]");
+        }
+       
         servletContext.setAttribute(CONTAINER_KEY, parent);
         setServletContextInContainer(parent);
         
         WmixConfiguration wc=  parent.getExtension(WmixConfiguration.class);
         ComponentsImpl components = createComponents(wc,parent);
+        //Components 放入Container中.
+        parent.setExtension(components,Components.class);
         parent.addListener(components);
     }
     
@@ -123,6 +126,7 @@ public class WmixContextLoaderListener extends ContextLoaderListener {
             c.setExtension(getServletContext(), ServletContext.class);
         }
     }
+    
     private ComponentsImpl createComponents(WmixConfiguration parentConfig, Container c) {
         ComponentsConfig componentsConfig = getComponentsConfig(parentConfig);
         Map<String, String> componentNamesAndLocations = findComponents(componentsConfig, getServletContext());
@@ -165,6 +169,7 @@ public class WmixContextLoaderListener extends ContextLoaderListener {
         return components;
     }
     /**
+     * 为每一个组件创建Container.
      * @param component
      * @param string
      */
@@ -177,10 +182,13 @@ public class WmixContextLoaderListener extends ContextLoaderListener {
         componentContainer.setId(componentName);
         componentContainer.addListener(component);
         component.setContainer(componentContainer);
-        // 将context保存在servletContext中
+        // 将Container保存在servletContext中
         String attrName = getComponentContextAttributeName(componentName);
         getServletContext().setAttribute(attrName, componentContainer);
 
+        //在Container中设置ServletContext.
+        componentContainer.setExtension(getServletContext(), ServletContext.class);
+        component.getController().init(component);
         LOG.debug("Published WebApplicationContext of component {} as ServletContext attribute with name [{}]",
                   componentName, attrName);
         
@@ -413,7 +421,7 @@ public class WmixContextLoaderListener extends ContextLoaderListener {
             }
 
             @Override
-            public WmixConfiguration getComponentConfiguration() {
+            public WmixConfiguration getWmixConfiguration() {
                 return getParentConfiguration();
             }
 
@@ -470,8 +478,6 @@ public class WmixContextLoaderListener extends ContextLoaderListener {
             } else {
                 this.componentPath = "/" + name;
             }
-
-            controller.init(this);
         }
         @Override
         public void handleEvent(ContainerEvent event) {
@@ -495,7 +501,7 @@ public class WmixContextLoaderListener extends ContextLoaderListener {
         }
       
         @Override
-        public WmixConfiguration getComponentConfiguration() {
+        public WmixConfiguration getWmixConfiguration() {
             ConfiguredBeanProvider provider = container.getExtension(ConfiguredBeanProvider.class);
             if (provider != null) {
                 return provider.getBeanOfType(configurationName,

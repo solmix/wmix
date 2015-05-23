@@ -18,7 +18,12 @@
  */
 package org.solmix.wmix.web.support;
 
-import org.solmix.wmix.web.Components;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.solmix.commons.util.ServletUtils;
+import org.solmix.runtime.Container;
+import org.solmix.wmix.web.Component;
 import org.solmix.wmix.web.RootController;
 
 
@@ -28,17 +33,27 @@ import org.solmix.wmix.web.RootController;
  * @version $Id$  2015年2月21日
  */
 
-public class RootControllerImpl implements RootController {
+public class RootControllerImpl extends AbstractRootController implements RootController {
 
-    /**
-     * {@inheritDoc}
-     * 
-     * @see org.solmix.wmix.web.RootController#init(org.solmix.wmix.web.Components)
-     */
-    @Override
-    public void init(Components components) {
-        // TODO Auto-generated method stub
-        
-    }
+	@Override
+	protected boolean invoke(HttpServletRequest request,HttpServletResponse response) throws Exception  {
+		  String path = ServletUtils.getResourcePath(request);
+
+	      Component component = getComponents().matchedComponent(path);
+	      boolean served = false;
+	      Container c= component.getContainer();
+	      Component orign= c.getExtension(Component.class);
+	      if (component != null) {
+	            try {
+	                c.setExtension(component, Component.class);
+	                served = component.getController().service(request,response);
+	            } finally {
+	            	c.setExtension(orign, Component.class);
+	            }
+	        }
+		return served;
+	}
+
+  
 
 }

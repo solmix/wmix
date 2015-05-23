@@ -18,6 +18,9 @@
  */
 package org.solmix.wmix.web.config;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.solmix.wmix.web.Component;
 import org.solmix.wmix.web.Controller;
 
@@ -36,5 +39,13 @@ public class TestController implements Controller {
         // TODO Auto-generated method stub
         
     }
+
+	@Override
+	public boolean service(HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 
 }

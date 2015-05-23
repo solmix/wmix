@@ -18,6 +18,10 @@
  */
 package org.solmix.wmix.web.config;
 
+import javax.servlet.FilterChain;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.solmix.wmix.web.Components;
 import org.solmix.wmix.web.RootController;
 
@@ -40,5 +44,12 @@ public class TestRootController implements RootController {
         // TODO Auto-generated method stub
         
     }
+
+	@Override
+	public void service(HttpServletRequest request,
+			HttpServletResponse response, FilterChain chain) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

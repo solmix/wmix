@@ -40,7 +40,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.io.IOUtils;
 import org.solmix.commons.util.ServletUtils;
 import org.solmix.commons.util.StringUtils;
-import org.solmix.wmix.test.TestEnvStatic;
+import org.solmix.wmix.test.TestUtils;
 
 import com.meterware.httpunit.WebResponse;
 import com.meterware.httpunit.javascript.JavaScript;
@@ -62,7 +62,7 @@ public abstract class AbstractTests {
     protected String            clientResponseContent;
     protected final void prepareWebClient(String webXmlName, String contextPath) throws Exception {
         // Servlet container
-        File webInf = new File(TestEnvStatic.srcdir, "WEB-INF");
+        File webInf = new File(TestUtils.srcdir, "WEB-INF");
         File webXml = new File(webInf, StringUtils.defaultIfEmpty(webXmlName, "web.xml"));
 
         ServletRunner servletRunner = new PatchedServletRunner(webXml, contextPath);

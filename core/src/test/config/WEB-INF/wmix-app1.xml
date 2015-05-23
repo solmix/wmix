@@ -11,7 +11,5 @@
            http://www.solmix.org/schema/wmix/wmix.xsd">
            
        <configuration productionMode="true" xmlns="http://www.solmix.org/schema/wmix">
-		<components autoDiscovery="true" defaultControllerClass="org.solmix.wmix.web.config.TestController">
-		</components>
 	</configuration>
 </beans>

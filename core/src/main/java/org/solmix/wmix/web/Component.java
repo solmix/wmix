@@ -30,14 +30,37 @@ import org.solmix.runtime.ContainerAware;
 
 public interface Component extends ContainerAware {
 
+    /**
+     * 所属Components集合。
+     * @return
+     */
     Components getComponents();
     
+    /**
+     * 获取Component名称。
+     * @return
+     */
     String getName();
     
+    /**
+     * 获取Components path，为默认Component返回空字符串。
+     * 
+     * @return
+     */
     String getComponentPath();
     
-    WmixConfiguration getComponentConfiguration();
+    /**
+     * 获取Component的配置。
+     * 
+     * @return
+     */
+    WmixConfiguration getWmixConfiguration();
     
+    /**
+     * 处理当前Component的controller。
+     * 
+     * @return
+     */
     Controller getController();
     
     @Override

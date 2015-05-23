@@ -18,6 +18,10 @@
  */
 package org.solmix.wmix.web;
 
+import javax.servlet.FilterChain;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 
 /**
  * 
@@ -28,4 +32,6 @@ package org.solmix.wmix.web;
 public interface RootController {
 
     void init(Components components);
+    
+    void service(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws Exception;
 }
