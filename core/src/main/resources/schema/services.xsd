@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	targetNamespace="http://www.solmix.org/schema/wmix" xmlns="http://www.solmix.org/schema/wmix"
+	elementFormDefault="qualified" attributeFormDefault="unqualified">
+	
+<xsd:element name="services" type="xsd:anyType"></xsd:element>
+
+
+</xsd:schema>

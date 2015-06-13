@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:wmix="http://www.solmix.org/schema/wmix"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.solmix.org/schema/wmix http://www.solmix.org/schema/wmix/wmix.xsd ">
+	<configuration productionMode="true"
+		xmlns="http://www.solmix.org/schema/wmix">
+		
+		<components autoDiscovery="true">
+		<component name ="app1" path="/app1">
+			<controller>
+				<bean class="org.solmix.wmix.config.TestController" xmlns="http://www.springframework.org/schema/beans"/>
+			</controller>
+			
+			<interceptorChain>
+					<in>
+					<prepareWebContxt/>
+					<setLoggingContext/>
+					<jsonDecode/> <!-- xmlDecode -->
+					<if>
+					
+					</if>
+					<performAction/><!-- perform -->
+					</in>
+					<out>
+					<renderTemplate/>
+					</out>
+				</interceptorChain>
+			<service>
+				
+			</service>
+		
+		</component>
+		<rootController>
+			<bean class="org.solmix.wmix.config.TestRootController" xmlns="http://www.springframework.org/schema/beans"/>
+		</rootController>
+		
+		</components>
+	</configuration>
+</beans>

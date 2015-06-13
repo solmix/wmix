@@ -10,9 +10,19 @@
            http://www.solmix.org/schema/wmix 
            http://www.solmix.org/schema/wmix/wmix.xsd">
            
-       	<configuration productionMode="true" xmlns="http://www.solmix.org/schema/wmix">
-			<components autoDiscovery="true">
-			<component name="app3" path="/app3"></component>
-			</components>
-		</configuration>
+     <configuration productionMode="true" internalPrefix="solmix" xmlns="http://www.solmix.org/schema/wmix/configuration">
+            <components autoDiscovery="true">
+            <component name="app3" path="/app3"></component>
+            </components>
+     </configuration>
+     <interceptors xmlns="http://www.solmix.org/schema/wmix/interceptors">
+	     <in></in>
+	     <out></out>
+     </interceptors>  
+     <service xmlns="http://www.solmix.org/schema/wmix/service">
+     
+     </service>  
+
+
+
 </beans>

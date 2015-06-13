@@ -5,17 +5,17 @@
         http://java.sun.com/xml/ns/j2ee  http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
 
     <listener>
-        <listener-class>org.solmix.wmix.web.context.WmixContextLoaderListener</listener-class>
+        <listener-class>org.solmix.wmix.context.WmixContextLoaderListener</listener-class>
     </listener>
 
     <filter>
         <filter-name>jsfilter</filter-name>
-        <filter-class>org.solmix.wmix.web.AbstractTests.JavaScriptFilter</filter-class>
+        <filter-class>org.solmix.wmix.AbstractTests.JavaScriptFilter</filter-class>
     </filter> 
 
     <filter>
         <filter-name>wmix</filter-name>
-        <filter-class>org.solmix.wmix.web.servlet.WmixFilter</filter-class>
+        <filter-class>org.solmix.wmix.servlet.WmixFilter</filter-class>
         <init-param>
             <param-name>passthru</param-name>
             <param-value>/app1/plaintext.txt</param-value>
@@ -34,7 +34,7 @@
 
     <servlet>
         <servlet-name>dummy</servlet-name>
-        <servlet-class>org.solmix.wmix.web.AbstractTests.ResourceServlet</servlet-class>
+        <servlet-class>org.solmix.wmix.AbstractTests.ResourceServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
