@@ -9,12 +9,10 @@ import java.net.URI;
 import java.util.Collection;
 
 import javax.servlet.ServletRequest;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.solmix.commons.util.ServletUtils;
 import org.solmix.commons.util.StringUtils;
 import org.solmix.runtime.Container;
 import org.solmix.runtime.exchange.Attachment;
@@ -26,8 +24,6 @@ import org.solmix.runtime.exchange.Transporter;
 import org.solmix.runtime.exchange.attachment.AttachmentDataSource;
 import org.solmix.runtime.exchange.model.EndpointInfo;
 import org.solmix.runtime.exchange.support.AbstractTransporter;
-import org.solmix.runtime.exchange.support.DefaultExchange;
-import org.solmix.runtime.helper.HttpHeaderHelper;
 import org.solmix.runtime.interceptor.Fault;
 import org.solmix.runtime.interceptor.SuspendedException;
 import org.solmix.runtime.io.AbstractWrappedOutputStream;
@@ -98,8 +94,7 @@ public class ServletTransporter extends AbstractTransporter implements Transport
         return LOG;
     }
 
-    public void invoke(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        Message msg = setupMessage(request,response);
+    public void invoke(WmixMessage msg) throws IOException {
         try{
             processor.process(msg);
         }catch(SuspendedException e){
@@ -121,38 +116,6 @@ public class ServletTransporter extends AbstractTransporter implements Transport
         
     }
     
-    private WmixMessage setupMessage(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        WmixMessage msg = new WmixMessage();
-        Exchange ex = new DefaultExchange();
-        ex.setIn(msg);
-        DelegatingInputStream in= new DelegatingInputStream(request.getInputStream());
-        msg.setContent(DelegatingInputStream.class, in);
-        msg.setContent(InputStream.class, in);
-        msg.put(HTTP_REQUEST, request);
-        msg.put(HTTP_RESPONSE, response);
-        msg.put(HTTP_REQUEST_METHOD, request.getMethod());
-        String reqUri=request.getRequestURI();
-        msg.put(Message.REQUEST_URI, reqUri);
-        String reqUrl=request.getRequestURL().toString();
-        msg.put(Message.REQUEST_URL, reqUrl);
-       
-        msg.put(Message.PATH_INFO,ServletUtils.getResourcePath(request) );
-        
-        String basePath = ServletUtils.getBaseURL(request);
-        if (!StringUtils.isEmpty(basePath)) {
-            msg.put(Message.BASE_PATH, basePath);
-        }
-        
-        String contentType = request.getContentType();
-        msg.put(Message.CONTENT_TYPE, contentType);
-        setEncoding(msg,request,contentType);
-        
-        msg.put(Message.QUERY_STRING, request.getQueryString());
-        msg.put(Message.ACCEPT_CONTENT_TYPE, request.getHeader("Accept"));
-        
-      
-        return msg;
-    }
     
     protected String getBasePath(String contextPath) throws IOException {
         String address=endpointInfo.getAddress();
@@ -165,27 +128,6 @@ public class ServletTransporter extends AbstractTransporter implements Transport
         return contextPath+address;
     }
     
-    private String setEncoding(final Message inMessage, final HttpServletRequest req, final String contentType) throws IOException {
-
-        String enc = HttpHeaderHelper.findCharset(contentType);
-        if (enc == null) {
-            enc = req.getCharacterEncoding();
-        }
-        
-        if (enc != null && enc.endsWith("\"")) {
-            enc = enc.substring(0, enc.length() - 1);
-        }
-        if (enc != null || "POST".equals(req.getMethod()) || "PUT".equals(req.getMethod())) {
-            // allow gets/deletes/options to not specify an encoding
-            String normalizedEncoding = HttpHeaderHelper.mapCharset(enc);
-            if (normalizedEncoding == null) {
-                LOG.warn("Invalid encoding {}",enc);
-                throw new IOException("Invalid encoding "+enc);
-            }
-            inMessage.put(Message.ENCODING, normalizedEncoding);
-        }
-        return contentType;
-    }
     
     protected OutputStream flushHeaders(Message outMessage) throws IOException {
         return flushHeaders(outMessage, true);

@@ -2,17 +2,19 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:wmix="http://www.solmix.org/schema/wmix"
+    xmlns:wmix="http://www.solmix.org/schema/wmix-components"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
            http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
            http://www.springframework.org/schema/context
            http://www.springframework.org/schema/context/spring-context-3.1.xsd
-           http://www.solmix.org/schema/wmix 
-           http://www.solmix.org/schema/wmix/wmix.xsd">
+           http://www.solmix.org/schema/wmix-components
+           http://www.solmix.org/schema/wmix-components/wmix-components.xsd">
            
-       	<configuration productionMode="true" xmlns="http://www.solmix.org/schema/wmix">
-			<components autoDiscovery="true">
-			<component name="app3" path="/app3"></component>
+			<components autoDiscovery="true" productionMode="true" xmlns="http://www.solmix.org/schema/wmix-components">
+			<component name="app3" path="/app3">
+				<endpoints>
+				<bean class="org.solmix.wmix.config.TestEndpoint"  xmlns="http://www.springframework.org/schema/beans"></bean>
+				</endpoints>
+			</component>
 			</components>
-		</configuration>
 </beans>

@@ -72,7 +72,7 @@ public interface Components extends Iterable<Component>{
      * 
      * @return
      */
-    WmixConfiguration getParentWmixConfiguration();
+    ComponentsConfig getComponentsConfig();
     
     /**
      * 所有{@link Component}的父{@link org.solmix.runtime.Container}。

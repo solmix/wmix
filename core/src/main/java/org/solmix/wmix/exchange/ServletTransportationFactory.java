@@ -31,7 +31,8 @@ public class ServletTransportationFactory implements PipelineFactory, Transporte
         URI_PREFIXES.add("https://");
     }
 
-    public static final List<String> TRANSPORT_TYPES = Arrays.asList("http://solmix.org/wmix/transport/servlet");
+    public static final String DEFAULT_TRANSPORT_ID="http://solmix.org/wmix/transport/servlet";
+    public static final List<String> TRANSPORT_TYPES = Arrays.asList(DEFAULT_TRANSPORT_ID);
 
     private final ReadWriteLock lock = new ReentrantReadWriteLock();
 

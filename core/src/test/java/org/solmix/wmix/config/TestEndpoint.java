@@ -16,11 +16,11 @@
  * http://www.gnu.org/licenses/ 
  * or see the FSF site: http://www.fsf.org. 
  */
-package org.solmix.wmix.datax;
+package org.solmix.wmix.config;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.solmix.runtime.exchange.Service;
+import org.solmix.wmix.Component;
 import org.solmix.wmix.endpoint.AbstractWmixEndpoint;
 import org.solmix.wmix.exchange.WmixMessage;
 
@@ -28,39 +28,29 @@ import org.solmix.wmix.exchange.WmixMessage;
 /**
  * 
  * @author solmix.f@gmail.com
- * @version $Id$  2015年6月13日
+ * @version $Id$  2015年6月16日
  */
 
-public class DataxEndpoint extends AbstractWmixEndpoint
+public class TestEndpoint extends AbstractWmixEndpoint
 {
-    private static final long serialVersionUID = 3880180524070563702L;
-    private static final Logger LOG= LoggerFactory.getLogger(DataxEndpoint.class);
-    public DataxEndpoint()
-    {
-        super();
+
+    private static final long serialVersionUID = 3288147415900435552L;
+
+    @Override
+    public void service(WmixMessage message) {
+        
+    }
+    public void init(Component component){
+        
+    }
+    @Override
+    protected Logger getLogger() {
+        return null;
     }
 
     @Override
     protected Service createService() {
-        // TODO Auto-generated method stub
         return null;
-    }
-
-
-    @Override
-    protected Logger getLogger() {
-        return LOG;
-    }
-
-    /**
-     * {@inheritDoc}
-     * 
-     * @see org.solmix.wmix.WmixEndpoint#service(org.solmix.wmix.exchange.WmixMessage)
-     */
-    @Override
-    public void service(WmixMessage message) {
-        // TODO Auto-generated method stub
-        
     }
 
 }

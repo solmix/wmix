@@ -1,1 +1,2 @@
-http\://www.solmix.org/schema/wmix=org.solmix.wmix.config.NamespaceHandler
+http\://www.solmix.org/schema/wmix-components=org.solmix.wmix.config.spring.ComponentsNamespaceHandler
+http\://www.solmix.org/schema/wmix-component=org.solmix.wmix.config.spring.ComponentNamespaceHandler

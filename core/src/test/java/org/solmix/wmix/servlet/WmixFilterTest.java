@@ -33,7 +33,6 @@ import org.solmix.runtime.Container;
 import org.solmix.runtime.ContainerFactory;
 import org.solmix.wmix.AbstractTests;
 import org.solmix.wmix.Components;
-import org.solmix.wmix.servlet.WmixFilter;
 import org.solmix.wmix.test.TestUtils;
 import org.solmix.wmix.util.RequestURIFilter;
 
@@ -107,8 +106,5 @@ public class WmixFilterTest extends AbstractTests {
 
         EasyMock.verify(request, response, filterChain);
     }
-    @Test
-    public void test() {
-
-    }
+   
 }

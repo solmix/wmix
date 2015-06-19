@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.Executor;
 
+import org.slf4j.Logger;
 import org.solmix.commons.util.Assert;
 import org.solmix.commons.util.ClassLoaderUtils;
 import org.solmix.commons.util.ClassLoaderUtils.ClassLoaderHolder;
@@ -32,16 +33,24 @@ import org.solmix.runtime.Container;
 import org.solmix.runtime.exchange.EndpointException;
 import org.solmix.runtime.exchange.Processor;
 import org.solmix.runtime.exchange.Protocol;
+import org.solmix.runtime.exchange.ProtocolFactory;
+import org.solmix.runtime.exchange.ProtocolFactoryManager;
 import org.solmix.runtime.exchange.Service;
 import org.solmix.runtime.exchange.ServiceCreateException;
+import org.solmix.runtime.exchange.Transporter;
+import org.solmix.runtime.exchange.TransporterFactory;
+import org.solmix.runtime.exchange.TransporterFactoryManager;
 import org.solmix.runtime.exchange.model.EndpointInfo;
+import org.solmix.runtime.exchange.model.ProtocolInfo;
 import org.solmix.runtime.interceptor.phase.PhasePolicy;
 import org.solmix.runtime.interceptor.support.InterceptorProviderAttrSupport;
 import org.solmix.wmix.Component;
 import org.solmix.wmix.WmixEndpoint;
 import org.solmix.wmix.condition.Condition;
+import org.solmix.wmix.exchange.ServletTransportationFactory;
 import org.solmix.wmix.exchange.ServletTransporter;
 import org.solmix.wmix.exchange.WmixPhasePolicy;
+import org.solmix.wmix.exchange.WmixProtocolFactory;
 
 
 /**
@@ -53,16 +62,21 @@ import org.solmix.wmix.exchange.WmixPhasePolicy;
 public abstract class AbstractWmixEndpoint extends InterceptorProviderAttrSupport implements WmixEndpoint
 {
     private static final long serialVersionUID = 3331770484397569065L;
+    
 
     private  EndpointInfo endpointInfo;
 
     private Protocol protocol;
+    
+    private ProtocolFactory protocolFactory;
 
     private List<Closeable> cleanupHooks;
 
     private Container container;
 
     private  Service service;
+    
+    private ServletTransporter transporter;
     
     private Processor inFaultProcessor;
 
@@ -75,6 +89,8 @@ public abstract class AbstractWmixEndpoint extends InterceptorProviderAttrSuppor
     private String rule;
     
     private String ruleType;
+    
+    private String address;
     
     public AbstractWmixEndpoint(){
         this(new WmixPhasePolicy());
@@ -93,13 +109,13 @@ public abstract class AbstractWmixEndpoint extends InterceptorProviderAttrSuppor
             if (loader != null) {
                 origLoader = ClassLoaderUtils.setThreadContextClassloader(loader);
             }
-//            initResourceRelove();
+            buildCondition();
             service =createService();
-            createEndpoint(container,service,createEndpointInfo());
-            initTransport();
-           
-            
-            protocolFactory.addListener(getServletTransporter(), this);
+            endpointInfo=createEndpointInfo(service);
+            initEndpoint();
+            transporter=createTrasporter();
+            //add listener and start up.
+            protocolFactory.addListener(transporter, this);
         }catch(IOException e){
             throw new ServiceCreateException(e);
         } catch (EndpointException e) {
@@ -109,39 +125,57 @@ public abstract class AbstractWmixEndpoint extends InterceptorProviderAttrSuppor
                 origLoader.reset();
             }
         }
-        buildCondition();
+        
     }
-    
+  
+    protected void initEndpoint() {
+        
+    }
+
+    protected abstract Logger getLogger();
   
     /**
      * @return
      */
-    private EndpointInfo createEndpointInfo() {
-        // TODO Auto-generated method stub
-        return null;
+    protected EndpointInfo createEndpointInfo(Service service)throws EndpointException {
+        EndpointInfo ei = new EndpointInfo();
+        ei.setTransportor(ServletTransportationFactory.DEFAULT_TRANSPORT_ID);
+        ei.setName(service.getServiceName());
+        ei.setAddress(getAddress());
+        ProtocolInfo ptl = createProtocolInfo();
+        ei.setProtocol(ptl);
+        return ei;
     }
+    
+    protected ProtocolInfo createProtocolInfo() {
+        ProtocolFactoryManager pfm = container.getExtension(ProtocolFactoryManager.class);
+        try {
+            pfm.getProtocolFactory(WmixProtocolFactory.WMIX_PROTOCOL_ID);
+        } catch (Exception e) { 
+            //不存在，就注册一个.
+            pfm.register(WmixProtocolFactory.WMIX_PROTOCOL_ID, new WmixProtocolFactory(container));
+        }
+        protocolFactory= pfm.getProtocolFactory(WmixProtocolFactory.WMIX_PROTOCOL_ID);
+        
+        ProtocolInfo pi = protocolFactory.createProtocolInfo(service, WmixProtocolFactory.WMIX_PROTOCOL_ID, null);
+        return pi;
+    }
+
 
     protected abstract Service createService();
-    /**
-     * @return
-     */
-    protected ServletTransporter getServletTransporter() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
    
-    /**
-     * 
-     */
-    protected void initTransport()throws IOException {
-        // TODO Auto-generated method stub
-        
-    }
-
-    protected void createEndpoint(Container container2, Service service2, EndpointInfo endpointInfo2) throws EndpointException{
-        // TODO Auto-generated method stub
-        
+    protected ServletTransporter createTrasporter() throws IOException {
+            TransporterFactoryManager  tf = this.container.getExtension(TransporterFactoryManager.class);
+            TransporterFactory   transporterFactory=tf.getFactory(ServletTransportationFactory.DEFAULT_TRANSPORT_ID);
+        if(this.transporter==null){
+            Transporter ts= transporterFactory.getTransporter(endpointInfo, container);
+            if(!(ts instanceof ServletTransporter)){
+                throw new IllegalArgumentException();
+            }
+            this.transporter=(ServletTransporter)ts;
+        }
+        getLogger().info("create transporter on {}",endpointInfo.getAddress());
+        return this.transporter;
     }
 
     protected void buildCondition(){
@@ -231,24 +265,18 @@ public abstract class AbstractWmixEndpoint extends InterceptorProviderAttrSuppor
 
     }
   
-    @Override
-    public String getRule() {
-        return rule;
+    public String getAddress() {
+        return address;
+    }
+
+    
+    public void setAddress(String address) {
+        this.address = address;
     }
     
-    @Override
-    public void setRule(String rule) {
-       this.rule=rule;
-    }
-    
-    @Override
-    public String getRuleType() {
-        return ruleType;
-    }
-    
-    @Override
-    public void setRuleType(String ruleType) {
-        this.ruleType=ruleType;
+    public String toString(){
+       
+        return this.getClass().getName()+"@"+System.identityHashCode(this);
     }
 
 }

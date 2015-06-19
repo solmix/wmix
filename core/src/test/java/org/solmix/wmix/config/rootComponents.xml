@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:wmix="http://www.solmix.org/schema/wmix-components"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.solmix.org/schema/wmix-components http://www.solmix.org/schema/wmix-components/wmix-components.xsd ">
+	<wmix:components productionMode="true" autoDiscovery="true">
+		<wmix:properties>
+			<entry key="key" value="value" />
+		</wmix:properties>
+		<wmix:rootController>
+			<bean class="org.solmix.wmix.config.TestRootController" xmlns="http://www.springframework.org/schema/beans"/>
+		</wmix:rootController>
+		<wmix:component name ="app1" path="/app1">
+			<wmix:controller>
+				<bean class="org.solmix.wmix.config.TestController" xmlns="http://www.springframework.org/schema/beans"/>
+			</wmix:controller>
+			<wmix:endpoints>
+				<bean class="org.solmix.wmix.datax.DataxEndpoint"  xmlns="http://www.springframework.org/schema/beans"></bean>
+			</wmix:endpoints>
+		</wmix:component>
+		
+	</wmix:components>
+</beans>

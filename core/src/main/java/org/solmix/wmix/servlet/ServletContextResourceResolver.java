@@ -12,7 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.naming.InitialContext;
 import javax.servlet.ServletContext;
 
-import org.solmix.runtime.resource.ResourceResolverAdaptor;
+import org.solmix.runtime.resource.support.ResourceResolverAdaptor;
 
 public class ServletContextResourceResolver extends ResourceResolverAdaptor {
 	  ServletContext servletContext;

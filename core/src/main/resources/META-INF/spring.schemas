@@ -1,1 +1,3 @@
-http\://www.solmix.org/schema/wmix/wmix.xsd=schema/wmix.xsd
+http\://www.solmix.org/schema/wmix-components/wmix-components.xsd=schema/wmix-components.xsd
+http\://www.solmix.org/schema/wmix-component/wmix-component.xsd=schema/wmix-component.xsd
+

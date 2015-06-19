@@ -21,8 +21,8 @@ package org.solmix.wmix.config;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.solmix.wmix.WmixConfiguration;
-import org.solmix.wmix.WmixConfiguration.ComponentsConfig;
+import org.solmix.wmix.ComponentConfig;
+import org.solmix.wmix.ComponentsConfig;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
@@ -31,23 +31,37 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  * @version $Id$ 2015年2月2日
  */
 
-public class WmixConfigTest extends Assert {
+public class ComponentsConfigTest extends Assert {
 
     @Test
     public void test() {
-        String location = "org/solmix/wmix/web/config/container.xml";
+        String location = "org/solmix/wmix/config/rootComponents.xml";
         ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext(location);
         assertNotNull(ctx);
-        WmixConfiguration o = (WmixConfiguration) ctx.getBean("wmix-configuration");
+        ComponentsConfig o = (ComponentsConfig) ctx.getBean(ComponentsConfig.DEFAULT_NAME);
         assertNotNull(o);
         assertTrue(o.isProductionMode());
-        WmixConfiguration wcf = ctx.getBean(WmixConfiguration.class);
+        ComponentsConfig wcf = ctx.getBean(ComponentsConfig.class);
         assertNotNull(wcf);
-        ComponentsConfig cc= wcf.getComponentsConfig();
-        assertNotNull(cc.getRootController());
-        assertTrue(cc.isAutoDiscovery());
+        assertNotNull(wcf.getRootController());
+        assertTrue(wcf.isAutoDiscovery());
+        assertEquals("value", wcf.getProperties().get("key"));
         
-        assertNotNull(cc.getComponents().get("app1").getController());
+        assertNotNull(wcf.getComponents().get("app1").getController());
+        assertTrue(wcf.getComponents().get("app1").getEndpoints().size()>=1);
+
+    }
+    @Test
+    public void testComponent() {
+        String location = "org/solmix/wmix/config/component.xml";
+        ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext(location);
+        assertNotNull(ctx);
+        ComponentConfig o = (ComponentConfig) ctx.getBean("app1");
+        assertNotNull(o);
+        assertEquals("app1", o.getName());
+        ComponentConfig wcf = ctx.getBean(ComponentConfig.class);
+        assertNotNull(wcf);
+        assertNotNull(wcf.getController());
 
     }
 }

@@ -16,31 +16,25 @@
  * http://www.gnu.org/licenses/ 
  * or see the FSF site: http://www.fsf.org. 
  */
-package org.solmix.wmix.exchange.endpoint;
+package org.solmix.wmix;
 
-import org.solmix.runtime.exchange.Endpoint;
-import org.solmix.runtime.exchange.EndpointException;
-import org.solmix.runtime.exchange.support.AbstractEndpointFactory;
+import java.util.List;
 
 
 /**
  * 
  * @author solmix.f@gmail.com
- * @version $Id$  2015年6月12日
+ * @version $Id$  2015年6月15日
  */
 
-public class WmixEndpointFactory extends AbstractEndpointFactory
+public interface ComponentConfig
 {
+    String DEFAULT_NAME = "wmix-component-config";
+    String getName();
 
-    /**
-     * {@inheritDoc}
-     * 
-     * @see org.solmix.runtime.exchange.support.AbstractEndpointFactory#createEndpoint()
-     */
-    @Override
-    protected Endpoint createEndpoint() throws EndpointException {
-        // TODO Auto-generated method stub
-        return null;
-    }
+    String getPath();
 
+    Controller getController();
+    
+    List<WmixEndpoint> getEndpoints();
 }

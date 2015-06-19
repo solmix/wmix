@@ -17,7 +17,7 @@
  * or see the FSF site: http://www.fsf.org. 
  */
 
-package org.solmix.wmix.config;
+package org.solmix.wmix.config.spring;
 
 import org.springframework.beans.factory.xml.NamespaceHandlerSupport;
 
@@ -27,11 +27,11 @@ import org.springframework.beans.factory.xml.NamespaceHandlerSupport;
  * @version $Id$ 2015年2月2日
  */
 
-public class NamespaceHandler extends NamespaceHandlerSupport {
+public class ComponentsNamespaceHandler extends NamespaceHandlerSupport {
 
     @Override
     public void init() {
-        registerBeanDefinitionParser("configuration", new WmixDefinitionParser());
+        registerBeanDefinitionParser("components", new ComponentsDefinitionParser());
     }
 
 }

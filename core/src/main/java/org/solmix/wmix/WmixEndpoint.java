@@ -21,6 +21,7 @@ package org.solmix.wmix;
 
 import org.solmix.runtime.exchange.Endpoint;
 import org.solmix.wmix.condition.Condition;
+import org.solmix.wmix.exchange.WmixMessage;
 
 /**
  * 根据Condition判断Endpoint是否允许接收并处理Message。
@@ -41,11 +42,5 @@ public interface WmixEndpoint extends Endpoint
 
     void setCondition(Condition condition);
 
-    String getRule();
-
-    void setRule(String rule);
-
-    String getRuleType();
-
-    void setRuleType(String ruleType);
+    void service(WmixMessage message);
 }

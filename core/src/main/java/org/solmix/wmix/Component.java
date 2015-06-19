@@ -18,6 +18,8 @@
  */
 package org.solmix.wmix;
 
+import java.util.List;
+
 import org.solmix.runtime.Container;
 import org.solmix.runtime.ContainerAware;
 
@@ -54,7 +56,7 @@ public interface Component extends ContainerAware {
      * 
      * @return
      */
-    WmixConfiguration getWmixConfiguration();
+    ComponentConfig getComponentConfig();
     
     /**
      * 处理当前Component的controller。
@@ -68,4 +70,9 @@ public interface Component extends ContainerAware {
 
     @Override
     Container getContainer();
+
+    /**
+     * @return
+     */
+    List<WmixEndpoint> getEndpoints();
 }

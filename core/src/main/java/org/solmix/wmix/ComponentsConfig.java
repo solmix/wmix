@@ -16,23 +16,40 @@
  * http://www.gnu.org/licenses/ 
  * or see the FSF site: http://www.fsf.org. 
  */
-package org.solmix.wmix.exchange;
 
-import org.solmix.runtime.exchange.support.DefaultMessage;
+package org.solmix.wmix;
+
+import java.util.Map;
 
 
 /**
  * 
  * @author solmix.f@gmail.com
- * @version $Id$  2015年6月11日
+ * @version $Id$ 2015年6月15日
  */
 
-public class WmixMessage extends DefaultMessage
+public interface ComponentsConfig
 {
+    String DEFAULT_NAME = "wmix-components-config";
+    boolean isProductionMode();
 
-    private static final long serialVersionUID = -4159735280112029078L;
-    public static final String HTTP_REQUEST = "HTTP.REQUEST";
-    public static final String HTTP_RESPONSE = "HTTP.RESPONSE";
-    public static final String HTTP_REQUEST_METHOD="HTTP.REQUEST.METHOD";
-    public static final String REQUEST_REDIRECTED = "http.request.redirected";
+    String getInternalPrefix();
+
+    Boolean isAutoDiscovery();
+
+    String getDiscoveryLocationPattern();
+
+    String getDefaultComponent();
+    
+    Map<String, Object> getProperties();
+
+    void setProperties(Map<String, Object> properties);
+
+    Class<?> getDefaultControllerClass();
+
+    Class<?> getRootControllerClass();
+
+    Map<String, ComponentConfig> getComponents();
+
+    RootController getRootController();
 }
