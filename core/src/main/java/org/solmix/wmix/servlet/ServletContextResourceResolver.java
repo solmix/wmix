@@ -19,7 +19,6 @@ import javax.servlet.ServletContext;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.solmix.commons.util.AntMatcher;
 import org.solmix.commons.util.Files;
 import org.solmix.commons.util.StringUtils;
 import org.solmix.runtime.resource.InputStreamResource;
@@ -155,14 +154,14 @@ public class ServletContextResourceResolver extends PathMatchingResourceResolver
 	                              // only returns entries for one directory level.
 	                              doRetrieveMatchingServletContextResources(servletContext, fullPattern, currPath, result);
 	                        }
-	                        if (jarFilePath != null && AntMatcher.getInstance().match(jarFilePath, currPath)) {
+	                        if (jarFilePath != null && matcher.match(jarFilePath, currPath)) {
 	                              // Base pattern matches a jar file - search for matching entries within.
 	                              String absoluteJarPath = servletContext.getRealPath(currPath);
 	                              if (absoluteJarPath != null) {
 	                                    doRetrieveMatchingJarEntries(absoluteJarPath, pathInJarFile, result);
 	                              }
 	                        }
-	                        if (AntMatcher.getInstance().match(fullPattern, currPath)) {
+	                        if (matcher.match(fullPattern, currPath)) {
 	                              result.add(new ServletContextResource(servletContext, currPath));
 	                        }
 	                  }
@@ -185,7 +184,7 @@ public class ServletContextResourceResolver extends PathMatchingResourceResolver
 	                        for (Enumeration<JarEntry> entries = jarFile.entries(); entries.hasMoreElements();) {
 	                              JarEntry entry = entries.nextElement();
 	                              String entryPath = entry.getName();
-	                              if (AntMatcher.getInstance().match(entryPattern, entryPath)) {
+	                              if (matcher.match(entryPattern, entryPath)) {
 	                                    result.add(new URLResource(
 	                                                Files.URL_PROTOCOL_JAR,
 	                                                Files.FILE_URL_PREFIX + jarFilePath + Files.JAR_URL_SEPARATOR + entryPath));
