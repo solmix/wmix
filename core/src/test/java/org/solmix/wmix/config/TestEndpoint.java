@@ -19,7 +19,7 @@
 package org.solmix.wmix.config;
 
 import org.slf4j.Logger;
-import org.solmix.runtime.exchange.Service;
+import org.solmix.exchange.Service;
 import org.solmix.wmix.Component;
 import org.solmix.wmix.endpoint.AbstractWmixEndpoint;
 import org.solmix.wmix.exchange.WmixMessage;

@@ -1,11 +1,11 @@
 package org.solmix.wmix.exchange;
 
-import org.solmix.runtime.exchange.Exchange;
-import org.solmix.runtime.exchange.Message;
-import org.solmix.runtime.exchange.Protocol;
-import org.solmix.runtime.exchange.model.ProtocolInfo;
-import org.solmix.runtime.exchange.support.DefaultMessage;
-import org.solmix.runtime.interceptor.support.InterceptorProviderSupport;
+import org.solmix.exchange.Exchange;
+import org.solmix.exchange.Message;
+import org.solmix.exchange.Protocol;
+import org.solmix.exchange.interceptor.support.InterceptorProviderSupport;
+import org.solmix.exchange.model.ProtocolInfo;
+import org.solmix.exchange.support.DefaultMessage;
 
 public class WmixProtocol extends InterceptorProviderSupport implements Protocol {
 

@@ -1,10 +1,10 @@
 package org.solmix.wmix.exchange;
 
-import org.solmix.runtime.exchange.Service;
-import org.solmix.runtime.exchange.event.ServiceFactoryEvent;
-import org.solmix.runtime.exchange.invoker.Invoker;
-import org.solmix.runtime.exchange.support.AbstractServiceFactory;
-import org.solmix.runtime.interceptor.support.ServiceInvokerInterceptor;
+import org.solmix.exchange.Service;
+import org.solmix.exchange.event.ServiceFactoryEvent;
+import org.solmix.exchange.interceptor.support.ServiceInvokerInterceptor;
+import org.solmix.exchange.invoker.Invoker;
+import org.solmix.exchange.support.AbstractServiceFactory;
 
 public class WmixServiceFactory extends AbstractServiceFactory {
 

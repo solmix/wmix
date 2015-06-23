@@ -18,7 +18,7 @@
  */
 package org.solmix.wmix.condition;
 
-import org.solmix.runtime.exchange.Message;
+import org.solmix.exchange.Message;
 
 
 /**

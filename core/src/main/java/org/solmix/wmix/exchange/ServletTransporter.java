@@ -14,18 +14,18 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.solmix.commons.util.StringUtils;
+import org.solmix.exchange.Attachment;
+import org.solmix.exchange.Exchange;
+import org.solmix.exchange.Message;
+import org.solmix.exchange.MessageUtils;
+import org.solmix.exchange.Pipeline;
+import org.solmix.exchange.Transporter;
+import org.solmix.exchange.attachment.AttachmentDataSource;
+import org.solmix.exchange.interceptor.Fault;
+import org.solmix.exchange.interceptor.SuspendedException;
+import org.solmix.exchange.model.EndpointInfo;
+import org.solmix.exchange.support.AbstractTransporter;
 import org.solmix.runtime.Container;
-import org.solmix.runtime.exchange.Attachment;
-import org.solmix.runtime.exchange.Exchange;
-import org.solmix.runtime.exchange.Message;
-import org.solmix.runtime.exchange.MessageUtils;
-import org.solmix.runtime.exchange.Pipeline;
-import org.solmix.runtime.exchange.Transporter;
-import org.solmix.runtime.exchange.attachment.AttachmentDataSource;
-import org.solmix.runtime.exchange.model.EndpointInfo;
-import org.solmix.runtime.exchange.support.AbstractTransporter;
-import org.solmix.runtime.interceptor.Fault;
-import org.solmix.runtime.interceptor.SuspendedException;
 import org.solmix.runtime.io.AbstractWrappedOutputStream;
 import org.solmix.runtime.io.CopyingOutputStream;
 import org.solmix.runtime.io.DelegatingInputStream;
@@ -55,7 +55,7 @@ public class ServletTransporter extends AbstractTransporter implements Transport
     /**
      * {@inheritDoc}
      * 
-     * @see org.solmix.runtime.exchange.Transporter#shutdown()
+     * @see org.solmix.exchange.Transporter#shutdown()
      */
     @Override
     public void shutdown() {
@@ -66,7 +66,7 @@ public class ServletTransporter extends AbstractTransporter implements Transport
     /**
      * {@inheritDoc}
      * 
-     * @see org.solmix.runtime.exchange.Transporter#getBackPipeline(org.solmix.runtime.exchange.Message)
+     * @see org.solmix.exchange.Transporter#getBackPipeline(org.solmix.exchange.Message)
      */
     @Override
     public Pipeline getBackPipeline(Message msg) throws IOException {
@@ -77,7 +77,7 @@ public class ServletTransporter extends AbstractTransporter implements Transport
     /**
      * {@inheritDoc}
      * 
-     * @see org.solmix.runtime.exchange.Transporter#getDefaultPort()
+     * @see org.solmix.exchange.Transporter#getDefaultPort()
      */
     @Override
     public int getDefaultPort() {
@@ -87,7 +87,7 @@ public class ServletTransporter extends AbstractTransporter implements Transport
     /**
      * {@inheritDoc}
      * 
-     * @see org.solmix.runtime.exchange.support.AbstractTransporter#getLogger()
+     * @see org.solmix.exchange.support.AbstractTransporter#getLogger()
      */
     @Override
     protected Logger getLogger() {

@@ -3,10 +3,10 @@ package org.solmix.wmix.exchange;
 import java.util.SortedSet;
 
 import org.solmix.commons.collections.SortedArraySet;
+import org.solmix.exchange.interceptor.Interceptor;
+import org.solmix.exchange.interceptor.phase.Phase;
+import org.solmix.exchange.interceptor.phase.PhasePolicy;
 import org.solmix.runtime.Extension;
-import org.solmix.runtime.interceptor.Interceptor;
-import org.solmix.runtime.interceptor.phase.Phase;
-import org.solmix.runtime.interceptor.phase.PhasePolicy;
 
 /**
  * {@link Interceptor} phase定义。

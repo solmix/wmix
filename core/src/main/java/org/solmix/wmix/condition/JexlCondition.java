@@ -26,8 +26,8 @@ import org.solmix.commons.expr.jexl.JexlExpressionFactory;
 import org.solmix.commons.util.Assert;
 import org.solmix.commons.util.StringUtils;
 import org.solmix.commons.util.TransformUtils;
+import org.solmix.exchange.Message;
 import org.solmix.runtime.Extension;
-import org.solmix.runtime.exchange.Message;
 
 
 /**

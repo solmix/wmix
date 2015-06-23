@@ -2,8 +2,8 @@ package org.solmix.wmix.exchange;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.solmix.runtime.exchange.Exchange;
-import org.solmix.runtime.exchange.invoker.AbstractInvoker;
+import org.solmix.exchange.Exchange;
+import org.solmix.exchange.invoker.AbstractInvoker;
 
 
 public class WmixInvoker  extends AbstractInvoker

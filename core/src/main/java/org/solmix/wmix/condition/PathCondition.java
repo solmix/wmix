@@ -27,9 +27,9 @@ import org.slf4j.LoggerFactory;
 import org.solmix.commons.regex.MatchResultSubstitution;
 import org.solmix.commons.regex.Substitution;
 import org.solmix.commons.util.StringUtils;
+import org.solmix.exchange.Message;
+import org.solmix.exchange.MessageUtils;
 import org.solmix.runtime.Extension;
-import org.solmix.runtime.exchange.Message;
-import org.solmix.runtime.exchange.MessageUtils;
 
 /**
  * 

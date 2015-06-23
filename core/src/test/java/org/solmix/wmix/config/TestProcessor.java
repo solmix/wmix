@@ -18,9 +18,9 @@
  */
 package org.solmix.wmix.config;
 
-import org.solmix.runtime.exchange.ExchangeException;
-import org.solmix.runtime.exchange.Message;
-import org.solmix.runtime.exchange.Processor;
+import org.solmix.exchange.ExchangeException;
+import org.solmix.exchange.Message;
+import org.solmix.exchange.Processor;
 
 
 /**
@@ -34,7 +34,7 @@ public class TestProcessor implements Processor {
     /**
      * {@inheritDoc}
      * 
-     * @see org.solmix.runtime.exchange.Processor#process(org.solmix.runtime.exchange.Message)
+     * @see org.solmix.exchange.Processor#process(org.solmix.exchange.Message)
      */
     @Override
     public void process(Message message) throws ExchangeException {

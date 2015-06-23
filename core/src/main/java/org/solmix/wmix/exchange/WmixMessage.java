@@ -18,7 +18,7 @@
  */
 package org.solmix.wmix.exchange;
 
-import org.solmix.runtime.exchange.support.DefaultMessage;
+import org.solmix.exchange.support.DefaultMessage;
 
 
 /**

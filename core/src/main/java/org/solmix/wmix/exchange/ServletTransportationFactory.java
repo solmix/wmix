@@ -11,15 +11,15 @@ import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import org.solmix.commons.util.Assert;
+import org.solmix.exchange.Pipeline;
+import org.solmix.exchange.PipelineFactory;
+import org.solmix.exchange.Transporter;
+import org.solmix.exchange.TransporterFactory;
+import org.solmix.exchange.model.EndpointInfo;
+import org.solmix.exchange.support.TransportDetectSupport;
 import org.solmix.runtime.Container;
 import org.solmix.runtime.Extension;
 import org.solmix.runtime.bean.BeanConfigurer;
-import org.solmix.runtime.exchange.Pipeline;
-import org.solmix.runtime.exchange.PipelineFactory;
-import org.solmix.runtime.exchange.Transporter;
-import org.solmix.runtime.exchange.TransporterFactory;
-import org.solmix.runtime.exchange.model.EndpointInfo;
-import org.solmix.runtime.exchange.support.TransportDetectSupport;
 
 @Extension(name = "http://solmix.org/wmix/transport/servlet")
 public class ServletTransportationFactory implements PipelineFactory, TransporterFactory, TransportDetectSupport

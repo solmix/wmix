@@ -1,14 +1,14 @@
 
 package org.solmix.wmix.exchange;
 
+import org.solmix.exchange.Endpoint;
+import org.solmix.exchange.Protocol;
+import org.solmix.exchange.Service;
+import org.solmix.exchange.Transporter;
+import org.solmix.exchange.model.NamedID;
+import org.solmix.exchange.model.ProtocolInfo;
+import org.solmix.exchange.support.AbstractProtocolFactory;
 import org.solmix.runtime.Container;
-import org.solmix.runtime.exchange.Endpoint;
-import org.solmix.runtime.exchange.Protocol;
-import org.solmix.runtime.exchange.Service;
-import org.solmix.runtime.exchange.Transporter;
-import org.solmix.runtime.exchange.model.NamedID;
-import org.solmix.runtime.exchange.model.ProtocolInfo;
-import org.solmix.runtime.exchange.support.AbstractProtocolFactory;
 
 public class WmixProtocolFactory extends AbstractProtocolFactory
 {

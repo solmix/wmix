@@ -6,14 +6,14 @@ import java.util.Map;
 import java.util.concurrent.Executor;
 
 import org.solmix.commons.util.PackageUtils;
-import org.solmix.runtime.exchange.Endpoint;
-import org.solmix.runtime.exchange.Service;
-import org.solmix.runtime.exchange.dataformat.DataFormat;
-import org.solmix.runtime.exchange.invoker.Invoker;
-import org.solmix.runtime.exchange.model.EndpointInfo;
-import org.solmix.runtime.exchange.model.NamedID;
-import org.solmix.runtime.exchange.model.ServiceInfo;
-import org.solmix.runtime.interceptor.support.InterceptorProviderAttrSupport;
+import org.solmix.exchange.Endpoint;
+import org.solmix.exchange.Service;
+import org.solmix.exchange.dataformat.DataFormat;
+import org.solmix.exchange.interceptor.support.InterceptorProviderAttrSupport;
+import org.solmix.exchange.invoker.Invoker;
+import org.solmix.exchange.model.EndpointInfo;
+import org.solmix.exchange.model.NamedID;
+import org.solmix.exchange.model.ServiceInfo;
 
 
 public class WmixService extends InterceptorProviderAttrSupport implements Service

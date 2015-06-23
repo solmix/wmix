@@ -19,7 +19,7 @@
 
 package org.solmix.wmix;
 
-import org.solmix.runtime.exchange.Endpoint;
+import org.solmix.exchange.Endpoint;
 import org.solmix.wmix.condition.Condition;
 import org.solmix.wmix.exchange.WmixMessage;
 
