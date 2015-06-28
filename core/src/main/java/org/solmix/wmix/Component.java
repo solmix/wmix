@@ -68,7 +68,6 @@ public interface Component extends ContainerAware {
     @Override
     void setContainer(Container container);
 
-    @Override
     Container getContainer();
 
     /**
