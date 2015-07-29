@@ -33,8 +33,10 @@ import org.solmix.runtime.Container;
 import org.solmix.runtime.ContainerFactory;
 import org.solmix.wmix.AbstractTests;
 import org.solmix.wmix.Components;
+import org.solmix.wmix.config.TestProcessor;
 import org.solmix.wmix.test.TestUtils;
 import org.solmix.wmix.util.RequestURIFilter;
+import org.springframework.context.ApplicationContext;
 
 import com.meterware.servletunit.InvocationContext;
 
@@ -61,7 +63,16 @@ public class WmixFilterTest extends AbstractTests {
     public void tearDown() throws Exception {
         Container[] cs=ContainerFactory.getContainers();
         for(Container c:cs){
-            c.close();
+            ApplicationContext a=  c.getExtension(ApplicationContext.class);
+            Container con =a.getBean(Container.class);
+            System.out.print(con.getId());
+            TestProcessor tp=  c.getExtension(TestProcessor.class);
+ if(tp.getContainer()!=null){
+     System.out.print("--&&&&"+tp.getContainer().getId());
+            }
+            System.out.println("--"+tp.toString());
+           
+//            c.close();
         }
     }
     @Test

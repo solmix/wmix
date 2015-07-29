@@ -9,10 +9,11 @@
            http://www.solmix.org/schema/wmix-component
            http://www.solmix.org/schema/wmix-component/wmix-component.xsd">
 
-	<component name="app2" path="/app2"
+	<component name="app1" path="/app1"
 		xmlns="http://www.solmix.org/schema/wmix-component">
 		<endpoints>
 			<bean class="org.solmix.wmix.config.TestEndpoint" xmlns="http://www.springframework.org/schema/beans"></bean>
 		</endpoints>
 	</component>
+	<bean class="org.solmix.wmix.config.TestProcessor"></bean>
 </beans>

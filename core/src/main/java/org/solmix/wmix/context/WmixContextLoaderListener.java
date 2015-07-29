@@ -379,6 +379,7 @@ public class WmixContextLoaderListener extends ContextLoaderListener {
             this.rootController=Assert.assertNotNull(root,"No root Controller");
             rootController.init(this);
         }
+        @Override
         public ComponentsConfig getComponentsConfig() {
             return componentsConfig;
         }

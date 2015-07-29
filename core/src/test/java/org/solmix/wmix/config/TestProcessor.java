@@ -18,9 +18,12 @@
  */
 package org.solmix.wmix.config;
 
+import javax.annotation.Resource;
+
 import org.solmix.exchange.ExchangeException;
 import org.solmix.exchange.Message;
 import org.solmix.exchange.Processor;
+import org.solmix.runtime.Container;
 
 
 /**
@@ -31,6 +34,8 @@ import org.solmix.exchange.Processor;
 
 public class TestProcessor implements Processor {
 
+    @Resource
+    private Container container;
     /**
      * {@inheritDoc}
      * 
@@ -39,6 +44,14 @@ public class TestProcessor implements Processor {
     @Override
     public void process(Message message) throws ExchangeException {
 
+    }
+    
+    public Container getContainer() {
+        return container;
+    }
+    
+    public void setContainer(Container container) {
+        this.container = container;
     }
 
 }
