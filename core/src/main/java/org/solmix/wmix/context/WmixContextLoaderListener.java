@@ -126,7 +126,7 @@ public class WmixContextLoaderListener extends ContextLoaderListener {
     @Override
     protected void customizeContext(ServletContext sc, ConfigurableWebApplicationContext wac) {
         if(sc.getInitParameter(ContextLoader.CONFIG_LOCATION_PARAM)==null){
-            wac.setConfigLocation("/WEB-INF/wmix.xml");
+            wac.setConfigLocations(new String[]{"/WEB-INF/wmix.xml","classpath*:META-INF/solmix/solmix.xml"});
         }
         super.customizeContext(sc, wac);
     }
