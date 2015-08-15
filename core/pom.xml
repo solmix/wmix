@@ -3,7 +3,7 @@
   <parent>
     <groupId>org.solmix.wmix</groupId>
     <artifactId>wmix</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.6.1-SNAPSHOT</version>
   </parent>
   <artifactId>wmix-core</artifactId>
   <dependencies>
@@ -36,9 +36,14 @@
 			<artifactId>solmix-common-runtime</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.solmix.common</groupId>
+			<artifactId>solmix-common-exchange</artifactId>
+			<version>0.6.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
 			<groupId>org.solmix.wmix</groupId>
 			<artifactId>wmix-test</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>0.6.1-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -50,11 +55,6 @@
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
 			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.solmix.common</groupId>
-			<artifactId>solmix-common-exchange</artifactId>
-			<version>0.6.1-SNAPSHOT</version>
 		</dependency>
   </dependencies>
 </project>

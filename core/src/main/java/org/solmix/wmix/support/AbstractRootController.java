@@ -11,13 +11,14 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.solmix.commons.util.ServletUtils;
+import org.solmix.runtime.ProductionAware;
 import org.solmix.wmix.Components;
 import org.solmix.wmix.ComponentsConfig;
 import org.solmix.wmix.RootController;
 import org.solmix.wmix.servlet.PassThroughSupport;
 import org.solmix.wmix.util.RequestURIFilter;
 
-public abstract class AbstractRootController implements RootController, PassThroughSupport
+public abstract class AbstractRootController implements RootController, PassThroughSupport,ProductionAware
 {
 
     protected final Logger log = LoggerFactory.getLogger(getClass());
@@ -25,6 +26,8 @@ public abstract class AbstractRootController implements RootController, PassThro
     private Components components;
 
     private RequestURIFilter passThroughFilter;
+
+    private boolean productionMode;
 
     @Override
     public void setPassThroughFilter(RequestURIFilter passthru) {
@@ -34,8 +37,7 @@ public abstract class AbstractRootController implements RootController, PassThro
     @Override
     public void init(Components components) {
         this.components = components;
-        ComponentsConfig config = getComponentsConfig();
-        log.debug("Initailizing Wmix Root Controller in {} mode,according to <configuration>", config.isProductionMode() ? "production"
+        log.debug("Initailizing Wmix Root Controller in {} mode,according to <configuration>", productionMode ? "production"
             : "developmment");
 
     }
@@ -78,4 +80,8 @@ public abstract class AbstractRootController implements RootController, PassThro
         return false;
     }
 
+    @Override
+    public void setProduction(boolean productionMode){
+        this.productionMode=productionMode;
+    }
 }

@@ -19,7 +19,7 @@ import javax.servlet.ServletContext;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.solmix.commons.util.Files;
+import org.solmix.commons.util.FileUtils;
 import org.solmix.commons.util.StringUtils;
 import org.solmix.runtime.resource.InputStreamResource;
 import org.solmix.runtime.resource.support.PathMatchingResourceResolver;
@@ -132,12 +132,12 @@ public class ServletContextResourceResolver extends PathMatchingResourceResolver
 	            Set<String> candidates = servletContext.getResourcePaths(dir);
 	            if (candidates != null) {
 	                  boolean dirDepthNotFixed = fullPattern.contains("**");
-	                  int jarFileSep = fullPattern.indexOf(Files.JAR_URL_SEPARATOR);
+	                  int jarFileSep = fullPattern.indexOf(FileUtils.JAR_URL_SEPARATOR);
 	                  String jarFilePath = null;
 	                  String pathInJarFile = null;
-	                  if (jarFileSep > 0 && jarFileSep + Files.JAR_URL_SEPARATOR.length() < fullPattern.length()) {
+	                  if (jarFileSep > 0 && jarFileSep + FileUtils.JAR_URL_SEPARATOR.length() < fullPattern.length()) {
 	                        jarFilePath = fullPattern.substring(0, jarFileSep);
-	                        pathInJarFile = fullPattern.substring(jarFileSep + Files.JAR_URL_SEPARATOR.length());
+	                        pathInJarFile = fullPattern.substring(jarFileSep + FileUtils.JAR_URL_SEPARATOR.length());
 	                  }
 	                  for (String currPath : candidates) {
 	                        if (!currPath.startsWith(dir)) {
@@ -186,8 +186,8 @@ public class ServletContextResourceResolver extends PathMatchingResourceResolver
 	                              String entryPath = entry.getName();
 	                              if (matcher.match(entryPattern, entryPath)) {
 	                                    result.add(new URLResource(
-	                                                Files.URL_PROTOCOL_JAR,
-	                                                Files.FILE_URL_PREFIX + jarFilePath + Files.JAR_URL_SEPARATOR + entryPath));
+	                                                FileUtils.URL_PROTOCOL_JAR,
+	                                                FileUtils.FILE_URL_PREFIX + jarFilePath + FileUtils.JAR_URL_SEPARATOR + entryPath));
 	                              }
 	                        }
 	                  }

@@ -19,8 +19,8 @@
 package org.solmix.wmix.config;
 
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.solmix.exchange.Service;
-import org.solmix.wmix.Component;
 import org.solmix.wmix.endpoint.AbstractWmixEndpoint;
 import org.solmix.wmix.exchange.WmixMessage;
 
@@ -36,21 +36,20 @@ public class TestEndpoint extends AbstractWmixEndpoint
 
     private static final long serialVersionUID = 3288147415900435552L;
 
+    private static final Logger LOG = LoggerFactory.getLogger(TestEndpoint.class);
     @Override
     public void service(WmixMessage message) {
         
     }
-    public void init(Component component){
-        
-    }
+
     @Override
     protected Logger getLogger() {
-        return null;
+        return LOG;
     }
 
     @Override
     protected Service createService() {
-        return null;
+        return new TestService();
     }
 
 }

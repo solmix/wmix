@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2015 The Solmix Project
+ * Copyright (container) 2015 The Solmix Project
  *
  * This is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as
@@ -42,7 +42,12 @@ public class RootControllerImpl extends AbstractRootController implements RootCo
 	      Component component = getComponents().matchedComponent(path);
 	      boolean served = false;
 	      Container c= component.getContainer();
-	      Component orign= c.getExtension(Component.class);
+	      Component orign = null;
+            try {
+                orign = c.getExtension(Component.class);
+            } catch (Exception e) {
+                /*Ignore*/
+            }
 	      if (component != null) {
 	            try {
 	                c.setExtension(component, Component.class);

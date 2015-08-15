@@ -12,7 +12,6 @@
 				<xsd:element name="rootController" type="xsd:anyType" minOccurs="0" />
                 <xsd:element name="component" type="componentType" minOccurs="0" maxOccurs="unbounded" />
             </xsd:sequence>
-			<xsd:attribute name="productionMode" type="xsd:boolean" />
 
 			<xsd:attribute name="internalPrefix" type="xsd:string"></xsd:attribute>
 			<xsd:attribute name="autoDiscovery" type="xsd:boolean" />

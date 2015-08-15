@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2015 The Solmix Project
+ * Copyright (container) 2015 The Solmix Project
  *
  * This is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as
@@ -86,6 +86,7 @@ public class WmixDefaultController implements Controller
         }
         this.endpoints=endpoints;
     }
+    
     protected AbstractServiceFactory initServiceFactory(){
         return new WmixServiceFactory(component.getComponentPath());
     }
@@ -147,6 +148,7 @@ public class WmixDefaultController implements Controller
       
         return msg;
     }
+    
     private String setEncoding(final Message inMessage, final HttpServletRequest req, final String contentType) throws IOException {
 
         String enc = HttpHeaderHelper.findCharset(contentType);
@@ -173,7 +175,4 @@ public class WmixDefaultController implements Controller
     public Component getComponent() {
         return component;
     }
-
-
-
 }

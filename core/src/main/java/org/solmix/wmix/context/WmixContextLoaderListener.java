@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2015 The Solmix Project
+ * Copyright (container) 2015 The Solmix Project
  *
  * This is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as
@@ -39,13 +39,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.solmix.commons.regex.PathNameWildcardCompiler;
 import org.solmix.commons.util.Assert;
-import org.solmix.commons.util.Files;
+import org.solmix.commons.util.FileUtils;
 import org.solmix.commons.util.StringUtils;
 import org.solmix.runtime.Container;
 import org.solmix.runtime.ContainerEvent;
 import org.solmix.runtime.ContainerListener;
-import org.solmix.runtime.bean.BeanConfigurer;
 import org.solmix.runtime.bean.ConfiguredBeanProvider;
+import org.solmix.runtime.extension.AssembleBeanSupport;
 import org.solmix.runtime.support.spring.SpringContainerFactory;
 import org.solmix.wmix.Component;
 import org.solmix.wmix.ComponentConfig;
@@ -202,7 +202,8 @@ public class WmixContextLoaderListener extends ContextLoaderListener {
             } else{//自动发现的
                 String location =componentNamesAndLocations.get(componentName);
                 SpringContainerFactory factory = new SpringContainerFactory(parentSpringContext);
-                Container componentContainer = factory.createContainer(location);
+                Container componentContainer = factory.createContainer(location,true);
+                componentContainer.setProduction(parent.isProduction());
                 setServletContextInContainer(componentContainer);
                 componentContainer.setId(componentName);
                 //父Container放入子container中。
@@ -350,14 +351,12 @@ public class WmixContextLoaderListener extends ContextLoaderListener {
 
     protected void configure(Container container, Object bean, String name,
         String extraName) {
-        BeanConfigurer configurer = container.getExtension(BeanConfigurer.class);
-        if (null != configurer) {
-            configurer.configureBean(name, bean);
-            if (extraName != null) {
-                configurer.configureBean(extraName, bean);
-            }
+        AssembleBeanSupport assemble = container.getExtension(AssembleBeanSupport.class);
+        if (null != assemble) {
+            assemble.assemble(name,bean);
         }
     }
+    
     public ServletContext getServletContext() {
         return servletContext;
     }
@@ -536,7 +535,7 @@ public class WmixContextLoaderListener extends ContextLoaderListener {
             this.controller = controller;
             this.endpoints=endpoints;
             this.configurationName = configurationName;
-            path = StringUtils.trimToNull(Files.normalizeAbsolutePath(path, true));
+            path = StringUtils.trimToNull(FileUtils.normalizeAbsolutePath(path, true));
             if (defaultComponent) {
                 Assert.assertTrue(path == null, "default component \"%s\" should not have component path \"%s\"", name, path);
                 this.componentPath = "";

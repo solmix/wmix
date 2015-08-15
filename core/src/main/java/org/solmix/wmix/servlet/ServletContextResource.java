@@ -28,7 +28,7 @@ import java.net.URL;
 import javax.servlet.ServletContext;
 
 import org.solmix.commons.util.Assert;
-import org.solmix.commons.util.Files;
+import org.solmix.commons.util.FileUtils;
 import org.solmix.runtime.resource.support.AbstractFileStreamResource;
 
 
@@ -63,7 +63,7 @@ public class ServletContextResource extends AbstractFileStreamResource
 
           // check path
           Assert.assertNotNull(path, "Path is required");
-          String pathToUse = Files.normalizeAbsolutePath(path,true);
+          String pathToUse = FileUtils.normalizeAbsolutePath(path,true);
           if (!pathToUse.startsWith("/")) {
                 pathToUse = "/" + pathToUse;
           }
@@ -161,7 +161,7 @@ public class ServletContextResource extends AbstractFileStreamResource
     @Override
     public File getFile() throws IOException {
         URL url = this.servletContext.getResource(this.path);
-        if (url != null && Files.isFileURL(url)) {
+        if (url != null && FileUtils.isFileURL(url)) {
             // Proceed with file system resolution...
             return super.getFile();
         } else {
@@ -185,7 +185,7 @@ public class ServletContextResource extends AbstractFileStreamResource
      */
     @Override
     public ServletContextResource createRelative(String relativePath) {
-          String pathToUse = Files.applyRelativePath(this.path, relativePath);
+          String pathToUse = FileUtils.applyRelativePath(this.path, relativePath);
           return new ServletContextResource(this.servletContext, pathToUse);
     }
 
@@ -196,7 +196,7 @@ public class ServletContextResource extends AbstractFileStreamResource
      */
     @Override
     public String getFilename() {
-          return Files.getFilename(this.path);
+          return FileUtils.getFilename(this.path);
     }
 
     /**

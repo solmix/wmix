@@ -31,7 +31,6 @@ import java.util.Map;
 public interface ComponentsConfig
 {
     String DEFAULT_NAME = "wmix-components-config";
-    boolean isProductionMode();
 
     String getInternalPrefix();
 

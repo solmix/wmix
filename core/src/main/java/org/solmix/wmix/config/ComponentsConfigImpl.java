@@ -53,8 +53,6 @@ public class ComponentsConfigImpl implements ComponentsConfig
 
     private RootController rootController;
 
-    private boolean productionMode;
-
     private String internalPrefix;
     
     private final Map<String, Object> properties = new ConcurrentHashMap<String, Object>(16, 0.75f, 4);
@@ -111,6 +109,7 @@ public class ComponentsConfigImpl implements ComponentsConfig
         this.components.put(component.getName(), component);
     }
 
+    @Override
     public Class<?> getDefaultControllerClass() {
         return defaultControllerClass == null ? WmixDefaultController.class : defaultControllerClass;
     }
@@ -119,6 +118,7 @@ public class ComponentsConfigImpl implements ComponentsConfig
         this.defaultControllerClass = defaultControllerClass;
     }
 
+    @Override
     public Class<?> getRootControllerClass() {
         return rootControllerClass == null ? RootControllerImpl.class : rootControllerClass;
     }
@@ -132,6 +132,7 @@ public class ComponentsConfigImpl implements ComponentsConfig
         this.rootController = rootController;
     }
 
+    @Override
     public String getInternalPrefix() {
         return internalPrefix;
     }
@@ -140,14 +141,6 @@ public class ComponentsConfigImpl implements ComponentsConfig
         this.internalPrefix = internalPrefix;
     }
 
-    @Override
-    public boolean isProductionMode() {
-        return productionMode;
-    }
-
-    public void setProductionMode(boolean productionMode) {
-        this.productionMode = productionMode;
-    }
     @Override
     public Map<String, Object> getProperties() {
         return properties;

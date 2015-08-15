@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2015 The Solmix Project
+ * Copyright (container) 2015 The Solmix Project
  *
  * This is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as
@@ -20,7 +20,7 @@ package org.solmix.wmix.config;
 
 import javax.annotation.Resource;
 
-import org.solmix.exchange.ExchangeException;
+import org.solmix.exchange.ExchangeRuntimeException;
 import org.solmix.exchange.Message;
 import org.solmix.exchange.Processor;
 import org.solmix.runtime.Container;
@@ -42,7 +42,7 @@ public class TestProcessor implements Processor {
      * @see org.solmix.exchange.Processor#process(org.solmix.exchange.Message)
      */
     @Override
-    public void process(Message message) throws ExchangeException {
+    public void process(Message message) throws ExchangeRuntimeException {
 
     }
     

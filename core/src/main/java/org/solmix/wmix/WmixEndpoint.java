@@ -35,9 +35,11 @@ public interface WmixEndpoint extends Endpoint
 
     /**
      * 在Controller初始化时调用。
+     * 
      * @param controller
      */
     void init(Component component);
+
     Condition getCondition();
 
     void setCondition(Condition condition);

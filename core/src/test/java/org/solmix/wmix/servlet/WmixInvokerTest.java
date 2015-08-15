@@ -41,7 +41,7 @@ public class WmixInvokerTest extends AbstractTests
     @Test
     public void internalRequest_schema() throws Exception {
         // schema - list page
-        invokeServlet("/app1/Webx/Schema");
+        invokeServlet("/app1/wmix/Schema");
 
         assertEquals(200, clientResponseCode);
     }

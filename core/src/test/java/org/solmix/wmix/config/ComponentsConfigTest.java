@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2015 The Solmix Project
+ * Copyright (container) 2015 The Solmix Project
  *
  * This is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as
@@ -40,7 +40,6 @@ public class ComponentsConfigTest extends Assert {
         assertNotNull(ctx);
         ComponentsConfig o = (ComponentsConfig) ctx.getBean(ComponentsConfig.DEFAULT_NAME);
         assertNotNull(o);
-        assertTrue(o.isProductionMode());
         ComponentsConfig wcf = ctx.getBean(ComponentsConfig.class);
         assertNotNull(wcf);
         assertNotNull(wcf.getRootController());

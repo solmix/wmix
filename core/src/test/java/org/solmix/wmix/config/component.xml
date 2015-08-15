@@ -9,7 +9,7 @@
 				<bean class="org.solmix.wmix.config.TestController" xmlns="http://www.springframework.org/schema/beans"/>
 			</wmix:controller>
 			<wmix:endpoints>
-				<bean class="org.solmix.wmix.datax.DataxEndpoint"  xmlns="http://www.springframework.org/schema/beans"></bean>
+				<bean class="org.solmix.wmix.config.TestEndpoint"  xmlns="http://www.springframework.org/schema/beans"></bean>
 			</wmix:endpoints>
 		</wmix:component>
 		

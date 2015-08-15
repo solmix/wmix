@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2015 The Solmix Project
+ * Copyright (container) 2015 The Solmix Project
  *
  * This is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as
@@ -19,6 +19,11 @@
 
 package org.solmix.wmix.servlet;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
+import java.io.File;
+
 import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -32,13 +37,13 @@ import org.solmix.commons.util.ServletUtils;
 import org.solmix.runtime.Container;
 import org.solmix.runtime.ContainerFactory;
 import org.solmix.wmix.AbstractTests;
+import org.solmix.wmix.Component;
 import org.solmix.wmix.Components;
-import org.solmix.wmix.config.TestProcessor;
 import org.solmix.wmix.test.TestUtils;
 import org.solmix.wmix.util.RequestURIFilter;
-import org.springframework.context.ApplicationContext;
 
 import com.meterware.servletunit.InvocationContext;
+import com.meterware.servletunit.PatchedServletRunner;
 
 /**
  * 
@@ -46,9 +51,11 @@ import com.meterware.servletunit.InvocationContext;
  * @version $Id$ 2015年2月1日
  */
 
-public class WmixFilterTest extends AbstractTests {
+public class WmixFilterTest extends AbstractTests
+{
 
     private WmixFilter filter;
+
     private Components components;
 
     @Before
@@ -57,24 +64,17 @@ public class WmixFilterTest extends AbstractTests {
         InvocationContext icc = client.newInvocation("http://127.0.0.1/myapps/app1");
         filter = (WmixFilter) icc.getFilter();
         Assert.assertNotNull(filter);
-        components=filter.getComponents();
+        components = filter.getComponents();
     }
+
     @After
     public void tearDown() throws Exception {
-        Container[] cs=ContainerFactory.getContainers();
-        for(Container c:cs){
-            ApplicationContext a=  c.getExtension(ApplicationContext.class);
-            Container con =a.getBean(Container.class);
-            System.out.print(con.getId());
-            TestProcessor tp=  c.getExtension(TestProcessor.class);
- if(tp.getContainer()!=null){
-     System.out.print("--&&&&"+tp.getContainer().getId());
-            }
-            System.out.println("--"+tp.toString());
-           
-//            c.close();
+        Container[] cs = ContainerFactory.getContainers();
+        for (Container c : cs) {
+             c.close();
         }
     }
+
     @Test
     public void isExcluded() throws Exception {
         filter.setExcludes("/aa , *.jpg");
@@ -83,11 +83,12 @@ public class WmixFilterTest extends AbstractTests {
         assertExcluded(true, "/cc/bb/a.jpg");
         assertExcluded(false, "/cc/aa/bb.html");
     }
+
     
     private void assertExcluded(boolean excluded, String requestURI) throws Exception {
         assertExcluded(excluded, requestURI, false);
     }
-    
+
     private void assertExcluded(boolean excluded, String requestURI, boolean internal) throws Exception {
         RequestURIFilter excludes = TestUtils.getFieldValue(filter, "excludeFilter", RequestURIFilter.class);
 
@@ -111,11 +112,32 @@ public class WmixFilterTest extends AbstractTests {
         }
 
         if (excluded && !internal) {
-            filter.doFilter(request, response, filterChain); 
+            filter.doFilter(request, response, filterChain);
             Assert.assertTrue(filter.isExcluded(ServletUtils.getResourcePath(request)));
         }
 
         EasyMock.verify(request, response, filterChain);
     }
-   
+    
+    @Test
+    public void componentPath_wrong() throws Exception {
+        File webInf = new File(TestUtils.srcdir, "app2/WEB-INF");
+        File webXml = new File(webInf, "web.xml");
+
+        try {
+            new PatchedServletRunner(webXml, "");
+            fail();
+        } catch (IllegalArgumentException e) {
+            Assert.assertThat(e, TestUtils.exception("default component \"app3\" should not have component path \"/app3\""));
+        }
+    }
+    
+    @Test
+    public void getComponent() throws Exception {
+       Assert.assertNull( components.getComponent("notexist"));
+       Component component= components.getComponent(null);
+       Assert.assertNull(component.getName());
+       assertEquals("", component.getComponentPath());
+    }
+
 }
