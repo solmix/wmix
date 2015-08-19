@@ -44,5 +44,5 @@ public interface WmixEndpoint extends Endpoint
 
     void setCondition(Condition condition);
 
-    void service(WmixMessage message);
+    void service(WmixMessage message)throws Exception;
 }

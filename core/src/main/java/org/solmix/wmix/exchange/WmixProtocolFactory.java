@@ -14,7 +14,7 @@ import org.solmix.runtime.Container;
 public class WmixProtocolFactory extends AbstractProtocolFactory
 {
 
-    public static final String WMIX_PROTOCOL_ID = "http://solmix.org/wmix/protocol/wmix";
+    public static final String WMIX_PROTOCOL_ID = "http://www.solmix.org/wmix";
 
     public WmixProtocolFactory()
     {
@@ -34,7 +34,6 @@ public class WmixProtocolFactory extends AbstractProtocolFactory
     @Override
     public Protocol createProtocol(ProtocolInfo info) {
         WmixProtocol ptl = new WmixProtocol(info);
-
         return ptl;
     }
 

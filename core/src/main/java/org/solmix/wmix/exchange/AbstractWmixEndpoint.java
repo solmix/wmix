@@ -17,7 +17,7 @@
  * or see the FSF site: http://www.fsf.org. 
  */
 
-package org.solmix.wmix.endpoint;
+package org.solmix.wmix.exchange;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -54,10 +54,6 @@ import org.solmix.wmix.Component;
 import org.solmix.wmix.WmixEndpoint;
 import org.solmix.wmix.condition.Condition;
 import org.solmix.wmix.condition.PathCondition;
-import org.solmix.wmix.exchange.ServletTransportationFactory;
-import org.solmix.wmix.exchange.ServletTransporter;
-import org.solmix.wmix.exchange.WmixPhasePolicy;
-import org.solmix.wmix.exchange.WmixProtocolFactory;
 
 /**
  * 
@@ -78,7 +74,7 @@ public abstract class AbstractWmixEndpoint extends InterceptorProviderAttrSuppor
 
     private List<Closeable> cleanupHooks;
 
-    private Container container;
+    protected Container container;
 
     private Service service;
 
@@ -90,7 +86,7 @@ public abstract class AbstractWmixEndpoint extends InterceptorProviderAttrSuppor
 
     private PhasePolicy phasePolicy;
 
-    private Condition condition;
+    protected Condition condition;
 
 //    private String rule;
 //    private String ruleType;
@@ -113,7 +109,7 @@ public abstract class AbstractWmixEndpoint extends InterceptorProviderAttrSuppor
     @Override
     public void init(Component component) {
         this.component=component;
-        this.container = component.getContainer();
+        setContainer( component.getContainer());
         Assert.isNotNull(this.container, "Endpoint container == null");
         ClassLoaderHolder origLoader = null;
         try {
@@ -121,7 +117,7 @@ public abstract class AbstractWmixEndpoint extends InterceptorProviderAttrSuppor
             if (loader != null) {
                 origLoader = ClassLoaderUtils.setThreadContextClassloader(loader);
             }
-            buildCondition(component);
+            buildConditionFilter(component);
             service = createService();
             endpointInfo = createEndpointInfo(service);
             initEndpoint();
@@ -129,6 +125,8 @@ public abstract class AbstractWmixEndpoint extends InterceptorProviderAttrSuppor
             protocol=createProtocol(endpointInfo.getProtocol());
             // add listener and start up.
             protocolFactory.addListener(transporter, this);
+            prepareInterceptors();
+            afterInit();
         } catch (IOException e) {
             throw new ServiceCreateException(e);
         } catch (EndpointException e) {
@@ -139,6 +137,18 @@ public abstract class AbstractWmixEndpoint extends InterceptorProviderAttrSuppor
             }
         }
 
+    }
+    
+    protected void setContainer(Container container) {
+        this.container = container;
+    }
+
+    protected void afterInit() {
+        
+    }
+
+    protected void prepareInterceptors() {
+        
     }
 
     protected Protocol createProtocol(ProtocolInfo pi) throws EndpointException {
@@ -165,7 +175,7 @@ public abstract class AbstractWmixEndpoint extends InterceptorProviderAttrSuppor
     protected abstract Logger getLogger();
 
     /**
-     * @return
+     * Endpoint描述
      */
     protected EndpointInfo createEndpointInfo(Service service) throws EndpointException {
         EndpointInfo ei = new EndpointInfo();
@@ -211,7 +221,8 @@ public abstract class AbstractWmixEndpoint extends InterceptorProviderAttrSuppor
         return this.transporter;
     }
 
-    protected void buildCondition(Component component) {
+    /**创建Endpoint输入消息的条件过滤器*/
+    protected void buildConditionFilter(Component component) {
         if (condition == null) {
             String parttern=path;
             if(StringUtils.isEmpty(parttern)){

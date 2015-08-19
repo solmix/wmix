@@ -24,7 +24,7 @@ import java.util.concurrent.Executor;
 
 import org.solmix.exchange.Endpoint;
 import org.solmix.exchange.Service;
-import org.solmix.exchange.dataformat.DataFormat;
+import org.solmix.exchange.data.DataProcessor;
 import org.solmix.exchange.interceptor.support.InterceptorProviderAttrSupport;
 import org.solmix.exchange.invoker.Invoker;
 import org.solmix.exchange.model.EndpointInfo;
@@ -87,10 +87,10 @@ public class TestService extends InterceptorProviderAttrSupport implements Servi
     /**
      * {@inheritDoc}
      * 
-     * @see org.solmix.exchange.Service#getDataFormat()
+     * @see org.solmix.exchange.Service#getDataProcessor()
      */
     @Override
-    public DataFormat getDataFormat() {
+    public DataProcessor getDataProcessor() {
         // TODO Auto-generated method stub
         return null;
     }
@@ -98,10 +98,10 @@ public class TestService extends InterceptorProviderAttrSupport implements Servi
     /**
      * {@inheritDoc}
      * 
-     * @see org.solmix.exchange.Service#setDataFormat(org.solmix.exchange.dataformat.DataFormat)
+     * @see org.solmix.exchange.Service#setDataProcessor(org.solmix.exchange.data.DataProcessor)
      */
     @Override
-    public void setDataFormat(DataFormat df) {
+    public void setDataProcessor(DataProcessor df) {
         // TODO Auto-generated method stub
         
     }

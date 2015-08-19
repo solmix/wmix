@@ -8,7 +8,7 @@ import java.util.concurrent.Executor;
 import org.solmix.commons.util.PackageUtils;
 import org.solmix.exchange.Endpoint;
 import org.solmix.exchange.Service;
-import org.solmix.exchange.dataformat.DataFormat;
+import org.solmix.exchange.data.DataProcessor;
 import org.solmix.exchange.interceptor.support.InterceptorProviderAttrSupport;
 import org.solmix.exchange.invoker.Invoker;
 import org.solmix.exchange.model.EndpointInfo;
@@ -22,7 +22,7 @@ public class WmixService extends InterceptorProviderAttrSupport implements Servi
     private static final long serialVersionUID = -6315846318409396395L;
     private Map<NamedID, Endpoint> endpoints = new HashMap<NamedID, Endpoint>();
     private Invoker invoker;
-    private DataFormat dataFormat;
+    private DataProcessor dataProcessor;
     private NamedID serviceName;
     private String address;
     
@@ -66,13 +66,13 @@ public class WmixService extends InterceptorProviderAttrSupport implements Servi
     }
 
     @Override
-    public DataFormat getDataFormat() {
-        return dataFormat;
+    public DataProcessor getDataProcessor() {
+        return dataProcessor;
     }
 
     @Override
-    public void setDataFormat(DataFormat df) {
-        this.dataFormat=df;
+    public void setDataProcessor(DataProcessor df) {
+        this.dataProcessor=df;
     }
 
     @Override

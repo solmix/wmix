@@ -52,43 +52,23 @@ public class ServletTransporter extends AbstractTransporter implements Transport
         }
     }
 
-    /**
-     * {@inheritDoc}
-     * 
-     * @see org.solmix.exchange.Transporter#shutdown()
-     */
     @Override
     public void shutdown() {
         // for servlet nothing to do.
 
     }
 
-    /**
-     * {@inheritDoc}
-     * 
-     * @see org.solmix.exchange.Transporter#getBackPipeline(org.solmix.exchange.Message)
-     */
     @Override
     public Pipeline getBackPipeline(Message msg) throws IOException {
         HttpServletResponse response =(HttpServletResponse)msg.get(HTTP_RESPONSE);
         return new BackPipeline(response);
     }
 
-    /**
-     * {@inheritDoc}
-     * 
-     * @see org.solmix.exchange.Transporter#getDefaultPort()
-     */
     @Override
     public int getDefaultPort() {
        throw new UnsupportedOperationException();
     }
 
-    /**
-     * {@inheritDoc}
-     * 
-     * @see org.solmix.exchange.support.AbstractTransporter#getLogger()
-     */
     @Override
     protected Logger getLogger() {
         return LOG;
@@ -167,6 +147,7 @@ public class ServletTransporter extends AbstractTransporter implements Transport
         }
         return responseStream;
     }
+    
     private int getReponseCodeFromMessage(Message message) {
         Integer i = (Integer)message.get(Message.RESPONSE_CODE);
         if (i != null) {
@@ -298,6 +279,7 @@ public class ServletTransporter extends AbstractTransporter implements Transport
          * Perform any actions required on stream flush (freeze headers,
          * reset output stream ... etc.)
          */
+        @Override
         protected void onFirstWrite() throws IOException {
             OutputStream responseStream = flushHeaders(outMessage);
             if (null != responseStream) {
@@ -308,6 +290,7 @@ public class ServletTransporter extends AbstractTransporter implements Transport
         /**
          * Perform any actions required on stream closure (handle response etc.)
          */
+        @Override
         public void close() throws IOException {
             if (!written && wrappedStream == null) {
                 OutputStream responseStream = flushHeaders(outMessage, false);
@@ -320,8 +303,5 @@ public class ServletTransporter extends AbstractTransporter implements Transport
                 response.flushBuffer();
             }
         }
-        
     }
-
-    
 }

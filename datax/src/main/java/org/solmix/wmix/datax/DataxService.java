@@ -66,12 +66,12 @@ public class DataxService extends InterceptorProviderAttrSupport implements Serv
     }
 
     @Override
-    public DataFormat getDataFormat() {
+    public DataFormat getDataProcessor() {
         return dataFormat;
     }
 
     @Override
-    public void setDataFormat(DataFormat df) {
+    public void setDataProcessor(DataFormat df) {
         this.dataFormat=df;
     }
 

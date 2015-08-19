@@ -21,7 +21,7 @@ import org.solmix.runtime.Container;
 import org.solmix.runtime.Extension;
 import org.solmix.runtime.bean.BeanConfigurer;
 
-@Extension(name = "http://solmix.org/wmix/transport/servlet")
+@Extension(name = " http://www.solmix.org/wmix")
 public class ServletTransportationFactory implements PipelineFactory, TransporterFactory, TransportDetectSupport
 {
 
@@ -31,7 +31,7 @@ public class ServletTransportationFactory implements PipelineFactory, Transporte
         URI_PREFIXES.add("https://");
     }
 
-    public static final String DEFAULT_TRANSPORT_ID="http://solmix.org/wmix/transport/servlet";
+    public static final String DEFAULT_TRANSPORT_ID= "http://www.solmix.org/wmix";
     public static final List<String> TRANSPORT_TYPES = Arrays.asList(DEFAULT_TRANSPORT_ID);
 
     private final ReadWriteLock lock = new ReentrantReadWriteLock();

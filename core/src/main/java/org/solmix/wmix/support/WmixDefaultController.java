@@ -30,6 +30,7 @@ import java.util.List;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,7 +50,6 @@ import org.solmix.wmix.Controller;
 import org.solmix.wmix.WmixEndpoint;
 import org.solmix.wmix.exchange.WmixMessage;
 import org.solmix.wmix.exchange.WmixServiceFactory;
-import org.solmix.wmix.servlet.ServletContextResourceResolver;
 
 /**
  * 
@@ -96,7 +96,7 @@ public class WmixDefaultController implements Controller
         ServletContext sc = this.container.getExtension(ServletContext.class);
         ResourceManager rm = this.container.getExtension(ResourceManager.class);
         // 注册ServletContext resource resolver.
-        rm.addResourceResolver(new ServletContextResourceResolver(sc));
+//        rm.addResourceResolver(new ServletContextResourceResolver(sc));
     }
 
     public ComponentConfig getComponentConfig() {
@@ -119,6 +119,7 @@ public class WmixDefaultController implements Controller
     private WmixMessage setupMessage(HttpServletRequest request, HttpServletResponse response)throws IOException {
         WmixMessage msg = new WmixMessage();
         Exchange ex = new DefaultExchange();
+        setupExchange(ex,request,response);
         ex.setIn(msg);
         DelegatingInputStream in= new DelegatingInputStream(request.getInputStream());
         msg.setContent(DelegatingInputStream.class, in);
@@ -140,7 +141,11 @@ public class WmixDefaultController implements Controller
         
         String contentType = request.getContentType();
         msg.put(Message.CONTENT_TYPE, contentType);
+       
         setEncoding(msg,request,contentType);
+        
+        ex.put(Message.CONTENT_TYPE, contentType);
+        ex.put(Message.ENCODING, msg.get(Message.ENCODING));
         
         msg.put(Message.QUERY_STRING, request.getQueryString());
         msg.put(Message.ACCEPT_CONTENT_TYPE, request.getHeader("Accept"));
@@ -149,6 +154,15 @@ public class WmixDefaultController implements Controller
         return msg;
     }
     
+    private void setupExchange(Exchange ex, HttpServletRequest request, HttpServletResponse response) {
+       ex.put(HttpServletRequest.class, request);
+       ex.put(HttpServletResponse.class, response);
+       ex.put(HttpSession.class, request.getSession());
+       ex.put("request", request);
+       ex.put("response", response);
+       ex.put("session", request.getSession());
+        
+    }
     private String setEncoding(final Message inMessage, final HttpServletRequest req, final String contentType) throws IOException {
 
         String enc = HttpHeaderHelper.findCharset(contentType);

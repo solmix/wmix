@@ -23,8 +23,8 @@ public class WmixServiceFactory extends AbstractServiceFactory {
 		}else{
 		    service.setInvoker(createInvoker());
 		}
-		if(getDataFormat()!=null){
-		    service.setDataFormat(getDataFormat());
+		if(getDataProcessor()!=null){
+		    service.setDataProcessor(getDataProcessor());
 		}
 		Service service =getService();
 		pulishEvent(ServiceFactoryEvent.END_CREATE,service);
