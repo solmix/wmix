@@ -175,7 +175,9 @@ public class WmixContextLoaderListener extends ContextLoaderListener {
         Set<String> componentNames = new TreeSet<String>();
 
         componentNames.addAll(componentNamesAndLocations.keySet());
-        componentNames.addAll(specifiedComponents.keySet());
+        if(specifiedComponents!=null){
+            componentNames.addAll(specifiedComponents.keySet());
+        }
         
         RootController root = componentsConfig.getRootController();
         if(root==null){
@@ -185,7 +187,11 @@ public class WmixContextLoaderListener extends ContextLoaderListener {
         ComponentsImpl components = new ComponentsImpl(parent,componentsConfig.getDefaultComponent(),root,componentsConfig);
         configure(parent,components);
         for (String componentName : componentNames) {
-            ComponentConfig componentConfig = specifiedComponents.get(componentName);
+            
+            ComponentConfig componentConfig =null;
+            if(specifiedComponents!=null){
+                componentConfig= specifiedComponents.get(componentName);
+            }
             //在wmix.xml中配置了component,在其他xml中加载配置
             if (componentConfig != null) {
                 String componentPath = componentConfig.getPath();

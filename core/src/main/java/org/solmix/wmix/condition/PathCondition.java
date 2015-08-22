@@ -73,7 +73,10 @@ public class PathCondition implements org.solmix.wmix.condition.Condition
             boolean negative = negativePatterns[i];
 
             if (negative != matched) {
-                LOG.debug("URL path(servletPath/pathInfo) matched pattern: {}",patternStrings[i]);
+                if(LOG.isTraceEnabled()){
+                    LOG.trace("URL path({}) matched pattern: {}",path,patternStrings[i]);
+                }
+               
 
                 Substitution subst = new MatchResultSubstitution(negative ? MatchResultSubstitution.EMPTY_MATCH_RESULT : matcher);
 

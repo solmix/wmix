@@ -3,7 +3,7 @@
   <parent>
     <groupId>org.solmix.wmix</groupId>
     <artifactId>wmix</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.6.1-SNAPSHOT</version>
   </parent>
   <artifactId>wmix-test</artifactId>
   <dependencies>
@@ -12,6 +12,12 @@
             <artifactId>httpunit</artifactId>
             <scope>compile</scope>
             <version>1.7.2</version>
+        </dependency>
+         <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-library</artifactId>
+            <version>1.3</version>
+            <scope>compile</scope>
         </dependency>
   </dependencies>
 </project>

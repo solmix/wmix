@@ -4,6 +4,7 @@ import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
+import org.hamcrest.Matcher;
 import org.junit.Assert;
 
 public class TestUtils {
@@ -90,5 +91,8 @@ public class TestUtils {
         method.setAccessible(true);
 
         return method;
+    }
+    public static <T extends Throwable> Matcher<T> exception(String... snippets) {
+        return new ExceptionMatcher<T>(snippets);
     }
 }

@@ -35,5 +35,7 @@
 	<description>wmix framework </description>
 	<modules>
 		<!-- <module>core</module> -->
+		<module>core</module>
+		<module>test</module>
 	</modules>
 </project>
