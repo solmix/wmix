@@ -1,5 +1,5 @@
 /**
- * Copyright (container) 2015 The Solmix Project
+ * Copyright (c) 2015 The Solmix Project
  *
  * This is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as
@@ -86,11 +86,13 @@ public class WmixFilter extends AbstractWmixFilter {
         HttpServletResponse response, FilterChain chain) throws IOException,ServletException {
     	  String path = ServletUtils.getResourcePath(request);
           if (isExcluded(path)) {
-        	  LOG.debug("Excluded request: {}", path);
+              if(LOG.isTraceEnabled())
+                  LOG.trace("Excluded request: {}", path);
               chain.doFilter(request, response);
               return;
           } else {
-              LOG.debug("Accepted and started to process request: {}", path);
+              if(LOG.isTraceEnabled())
+                  LOG.trace("Accepted and started to process request: {}", path);
           }
           try {
 			components.getRootController().service(request, response, chain);
