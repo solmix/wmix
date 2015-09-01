@@ -50,6 +50,12 @@ import org.solmix.wmix.Controller;
 import org.solmix.wmix.WmixEndpoint;
 import org.solmix.wmix.exchange.WmixMessage;
 import org.solmix.wmix.exchange.WmixServiceFactory;
+import org.solmix.wmix.parser.CookieParser;
+import org.solmix.wmix.parser.ParameterParser;
+import org.solmix.wmix.parser.ParameterParserFilter;
+import org.solmix.wmix.parser.support.DefaultCookieParser;
+import org.solmix.wmix.parser.support.DefaultParameterParser;
+import org.solmix.wmix.upload.UploadService;
 
 /**
  * 
@@ -68,12 +74,20 @@ public class WmixDefaultController implements Controller
 
     private Container container;
     private List<WmixEndpoint> endpoints;
+    private UploadService upload;
+    
+    private  ParameterParserFilter[] filters;
+    
+    private boolean                 trimming;
+    
+    private String                  htmlFieldSuffix;
     @Override
     public void init(Component component) {
         this.component = component;
         this.container=component.getContainer();
         initResourceRelove();
         instanceEndpoints(component.getEndpoints());
+        upload=container.getExtension(UploadService.class);
     }
     /**
      * @param endpoints
@@ -117,6 +131,8 @@ public class WmixDefaultController implements Controller
     }
 
     private WmixMessage setupMessage(HttpServletRequest request, HttpServletResponse response)throws IOException {
+        
+       
         WmixMessage msg = new WmixMessage();
         Exchange ex = new DefaultExchange();
         setupExchange(ex,request,response);
@@ -161,6 +177,11 @@ public class WmixDefaultController implements Controller
        ex.put("request", request);
        ex.put("response", response);
        ex.put("session", request.getSession());
+       ParameterParser parameterParser = new DefaultParameterParser(ex, request, upload, filters, trimming, htmlFieldSuffix);
+       ex.put(ParameterParser.class, parameterParser);
+       
+       CookieParser cookie = new DefaultCookieParser(request, response);
+       ex.put(CookieParser.class, cookie);
         
     }
     private String setEncoding(final Message inMessage, final HttpServletRequest req, final String contentType) throws IOException {
@@ -189,4 +210,29 @@ public class WmixDefaultController implements Controller
     public Component getComponent() {
         return component;
     }
+    
+    public ParameterParserFilter[] getFilters() {
+        return filters;
+    }
+    
+    public void setFilters(ParameterParserFilter[] filters) {
+        this.filters = filters;
+    }
+    
+    public boolean isTrimming() {
+        return trimming;
+    }
+    
+    public void setTrimming(boolean trimming) {
+        this.trimming = trimming;
+    }
+    
+    public String getHtmlFieldSuffix() {
+        return htmlFieldSuffix;
+    }
+    
+    public void setHtmlFieldSuffix(String htmlFieldSuffix) {
+        this.htmlFieldSuffix = htmlFieldSuffix;
+    }
+    
 }

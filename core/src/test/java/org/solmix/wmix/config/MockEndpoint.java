@@ -31,12 +31,12 @@ import org.solmix.wmix.exchange.WmixMessage;
  * @version $Id$  2015年6月16日
  */
 
-public class TestEndpoint extends AbstractWmixEndpoint
+public class MockEndpoint extends AbstractWmixEndpoint
 {
 
     private static final long serialVersionUID = 3288147415900435552L;
 
-    private static final Logger LOG = LoggerFactory.getLogger(TestEndpoint.class);
+    private static final Logger LOG = LoggerFactory.getLogger(MockEndpoint.class);
     @Override
     public void service(WmixMessage message) {
         
@@ -49,7 +49,7 @@ public class TestEndpoint extends AbstractWmixEndpoint
 
     @Override
     protected Service createService() {
-        return new TestService();
+        return new MockService();
     }
 
 }

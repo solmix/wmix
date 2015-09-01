@@ -8,14 +8,14 @@
 			<entry key="key" value="value" />
 		</wmix:properties>
 		<wmix:rootController>
-			<bean class="org.solmix.wmix.config.TestRootController" xmlns="http://www.springframework.org/schema/beans"/>
+			<bean class="org.solmix.wmix.config.MockRootController" xmlns="http://www.springframework.org/schema/beans"/>
 		</wmix:rootController>
 		<wmix:component name ="app1" path="/app1">
 			<wmix:controller>
-				<bean class="org.solmix.wmix.config.TestController" xmlns="http://www.springframework.org/schema/beans"/>
+				<bean class="org.solmix.wmix.config.MockController" xmlns="http://www.springframework.org/schema/beans"/>
 			</wmix:controller>
 			<wmix:endpoints>
-				<bean class="org.solmix.wmix.config.TestEndpoint"  xmlns="http://www.springframework.org/schema/beans"></bean>
+				<bean class="org.solmix.wmix.config.MockEndpoint"  xmlns="http://www.springframework.org/schema/beans"></bean>
 			</wmix:endpoints>
 		</wmix:component>
 		

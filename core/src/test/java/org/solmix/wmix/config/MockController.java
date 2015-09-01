@@ -18,12 +18,11 @@
  */
 package org.solmix.wmix.config;
 
-import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.solmix.wmix.Components;
-import org.solmix.wmix.RootController;
+import org.solmix.wmix.Component;
+import org.solmix.wmix.Controller;
 
 
 /**
@@ -32,24 +31,21 @@ import org.solmix.wmix.RootController;
  * @version $Id$  2015年2月21日
  */
 
-public class TestRootController implements RootController {
+public class MockController implements Controller {
 
-    /**
-     * {@inheritDoc}
-     * 
-     * @see org.solmix.wmix.RootController#init(org.solmix.wmix.Components)
-     */
+    
     @Override
-    public void init(Components components) {
+    public void init(Component component) {
         // TODO Auto-generated method stub
         
     }
 
 	@Override
-	public void service(HttpServletRequest request,
-			HttpServletResponse response, FilterChain chain) throws Exception {
+	public boolean service(HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
 		// TODO Auto-generated method stub
-		
+		return false;
 	}
+
 
 }

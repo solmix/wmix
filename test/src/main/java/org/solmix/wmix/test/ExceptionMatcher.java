@@ -17,7 +17,6 @@ import org.hamcrest.Matcher;
 /**
  * 用来检查一个异常的类型和message内容。
  *
- * @author Michael Zhou
  */
 public class ExceptionMatcher<T extends Throwable> extends BaseMatcher<T> {
     private final Matcher<?>                 exceptionMatcher;

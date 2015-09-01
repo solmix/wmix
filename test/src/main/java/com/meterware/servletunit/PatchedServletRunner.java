@@ -26,7 +26,6 @@ import com.meterware.httpunit.WebRequest;
  * <li>不支持httpOnly cookie的问题。</li>
  * </ul>
  *
- * @author Michael Zhou
  */
 public class PatchedServletRunner extends ServletRunner {
     public PatchedServletRunner() {

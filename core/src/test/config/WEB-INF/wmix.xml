@@ -16,11 +16,11 @@
 			<components autoDiscovery="true" xmlns="http://www.solmix.org/schema/wmix-components">
 			<component name="app3" path="/app3">
 				<endpoints>
-				<bean class="org.solmix.wmix.config.TestEndpoint"  xmlns="http://www.springframework.org/schema/beans"></bean>
+				<bean class="org.solmix.wmix.config.MockEndpoint"  xmlns="http://www.springframework.org/schema/beans"></bean>
 				</endpoints>
 			</component>
 			</components>
 		
-			<bean class="org.solmix.wmix.config.TestProcessor"></bean>
+			<bean class="org.solmix.wmix.config.MockProcessor"></bean>
 				<c:container production="false"/>
 </beans>

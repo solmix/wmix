@@ -18,40 +18,38 @@
  */
 package org.solmix.wmix.config;
 
-import javax.annotation.Resource;
+import javax.servlet.FilterChain;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-import org.solmix.exchange.ExchangeRuntimeException;
-import org.solmix.exchange.Message;
-import org.solmix.exchange.Processor;
-import org.solmix.runtime.Container;
+import org.solmix.wmix.Components;
+import org.solmix.wmix.RootController;
 
 
 /**
  * 
  * @author solmix.f@gmail.com
- * @version $Id$  2015年2月2日
+ * @version $Id$  2015年2月21日
  */
 
-public class TestProcessor implements Processor {
+public class MockRootController implements RootController {
 
-    @Resource
-    private Container container;
     /**
      * {@inheritDoc}
      * 
-     * @see org.solmix.exchange.Processor#process(org.solmix.exchange.Message)
+     * @see org.solmix.wmix.RootController#init(org.solmix.wmix.Components)
      */
     @Override
-    public void process(Message message) throws ExchangeRuntimeException {
+    public void init(Components components) {
+        // TODO Auto-generated method stub
+        
+    }
 
-    }
-    
-    public Container getContainer() {
-        return container;
-    }
-    
-    public void setContainer(Container container) {
-        this.container = container;
-    }
+	@Override
+	public void service(HttpServletRequest request,
+			HttpServletResponse response, FilterChain chain) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

@@ -38,7 +38,7 @@ import org.solmix.exchange.model.ServiceInfo;
  * @version $Id$  2015年8月14日
  */
 
-public class TestService extends InterceptorProviderAttrSupport implements Service
+public class MockService extends InterceptorProviderAttrSupport implements Service
 {
 
     private static final long serialVersionUID = 6079290550980480351L;

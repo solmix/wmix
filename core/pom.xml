@@ -37,6 +37,10 @@
 			<version>0.6.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.solmix.wmix</groupId>
 			<artifactId>wmix-test</artifactId>
 			<version>0.6.1-SNAPSHOT</version>
