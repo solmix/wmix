@@ -16,13 +16,13 @@ import org.solmix.exchange.PipelineFactory;
 import org.solmix.exchange.Transporter;
 import org.solmix.exchange.TransporterFactory;
 import org.solmix.exchange.model.EndpointInfo;
-import org.solmix.exchange.support.TransportDetectSupport;
+import org.solmix.exchange.support.TypeDetectSupport;
 import org.solmix.runtime.Container;
 import org.solmix.runtime.Extension;
 import org.solmix.runtime.bean.BeanConfigurer;
 
 @Extension(name = " http://www.solmix.org/wmix")
-public class ServletTransportationFactory implements PipelineFactory, TransporterFactory, TransportDetectSupport
+public class ServletTransportationFactory implements PipelineFactory, TransporterFactory, TypeDetectSupport
 {
 
     private static final Set<String> URI_PREFIXES = new HashSet<String>();

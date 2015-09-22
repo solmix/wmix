@@ -22,6 +22,7 @@ package org.solmix.wmix.upload.support;
 import java.io.File;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.fileupload.FileItem;
@@ -52,11 +53,13 @@ public class DefaultUploadService implements UploadService
 
     private boolean initialized;
 
+    @PostConstruct
     protected void init() {
         params.applyDefaultValues();
         LOG.info("Upload Parameters: {}", params);
 
         fileUpload = getFileUpload(params, false);
+        initialized=true;
     }
 
     @Override

@@ -65,11 +65,6 @@ public class ServletTransporter extends AbstractTransporter implements Transport
     }
 
     @Override
-    public int getDefaultPort() {
-       throw new UnsupportedOperationException();
-    }
-
-    @Override
     protected Logger getLogger() {
         return LOG;
     }

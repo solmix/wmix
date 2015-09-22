@@ -1,6 +1,8 @@
 
 package org.solmix.wmix.exchange;
 
+import java.util.Dictionary;
+
 import org.solmix.exchange.Endpoint;
 import org.solmix.exchange.Protocol;
 import org.solmix.exchange.Service;
@@ -38,7 +40,7 @@ public class WmixProtocolFactory extends AbstractProtocolFactory
     }
 
     @Override
-    public ProtocolInfo createProtocolInfo(Service service, String protocol, Object configObject) {
+    public ProtocolInfo createProtocolInfo(Service service, String protocol, Dictionary<String, ?> configObject) {
         ProtocolInfo ptlInfo = new ProtocolInfo(null, WMIX_PROTOCOL_ID);
         ptlInfo.setName(new NamedID(WMIX_PROTOCOL_ID, "protocol"));
         return ptlInfo;
