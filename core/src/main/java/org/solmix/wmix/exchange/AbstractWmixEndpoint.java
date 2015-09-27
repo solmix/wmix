@@ -124,7 +124,7 @@ public abstract class AbstractWmixEndpoint extends InterceptorProviderAttrSuppor
             transporter = createTrasporter();
             protocol=createProtocol(endpointInfo.getProtocol());
             // add listener and start up.
-            protocolFactory.addListener(transporter, this);
+            protocol.addListener(transporter, this);
             prepareInterceptors();
             afterInit();
         } catch (IOException e) {

@@ -3,17 +3,19 @@ package org.solmix.wmix.exchange;
 import org.solmix.exchange.Exchange;
 import org.solmix.exchange.Message;
 import org.solmix.exchange.Protocol;
-import org.solmix.exchange.interceptor.support.InterceptorProviderSupport;
 import org.solmix.exchange.model.ProtocolInfo;
+import org.solmix.exchange.support.AbstractProtocol;
 import org.solmix.exchange.support.DefaultMessage;
+import org.solmix.runtime.Container;
 
-public class WmixProtocol extends InterceptorProviderSupport implements Protocol {
+public class WmixProtocol extends AbstractProtocol implements Protocol {
 
 	private static final long serialVersionUID = 2281575158621757145L;
 
 	private ProtocolInfo protocolInfo;
 	
-	public WmixProtocol(ProtocolInfo info){
+	public WmixProtocol(ProtocolInfo info,Container container){
+	    super(container);
 	    protocolInfo=info;
 	}
 	@Override
