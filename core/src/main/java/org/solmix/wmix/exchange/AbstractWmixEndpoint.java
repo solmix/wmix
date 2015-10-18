@@ -347,7 +347,7 @@ public abstract class AbstractWmixEndpoint extends InterceptorProviderAttrSuppor
 
     @Override
     public String toString() {
-        return this.getClass().getName() + "@" + System.identityHashCode(this);
+        return this.getClass().getName() + "@," + System.identityHashCode(this);
     }
 
 }

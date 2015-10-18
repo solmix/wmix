@@ -1,6 +1,9 @@
 
 package org.solmix.wmix.exchange;
 
+import static org.solmix.wmix.exchange.WmixMessage.HTTP_RESPONSE;
+import static org.solmix.wmix.exchange.WmixMessage.REQUEST_REDIRECTED;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -35,10 +38,6 @@ public class ServletTransporter extends AbstractTransporter implements Transport
 {
 
     private static final Logger LOG = LoggerFactory.getLogger(ServletTransporter.class);
-    public static final String HTTP_REQUEST = "HTTP.REQUEST";
-    public static final String HTTP_RESPONSE = "HTTP.RESPONSE";
-    public static final String HTTP_REQUEST_METHOD="HTTP.REQUEST.METHOD";
-    public static final String REQUEST_REDIRECTED = "http.request.redirected";
     protected boolean isServlet3;
 
     public ServletTransporter(Container c, EndpointInfo ei, String address)
@@ -60,7 +59,8 @@ public class ServletTransporter extends AbstractTransporter implements Transport
 
     @Override
     public Pipeline getBackPipeline(Message msg) throws IOException {
-        HttpServletResponse response =(HttpServletResponse)msg.get(HTTP_RESPONSE);
+        
+        HttpServletResponse response =(HttpServletResponse)msg.getExchange().get(WmixMessage.RESPONSE);;
         return new BackPipeline(response);
     }
 

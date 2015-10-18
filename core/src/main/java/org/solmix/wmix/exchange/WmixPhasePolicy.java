@@ -60,15 +60,15 @@ public class WmixPhasePolicy implements PhasePolicy
        
        out.add(new Phase(Phase.WRITE, ++i*1000));
        
-       out.add(new Phase(Phase.PRE_ENCODE, ++i*1000));
-       out.add(new Phase(Phase.ENCODE, ++i*1000));
-       out.add(new Phase(Phase.POST_ENCODE, ++i*1000));
+       out.add(new Phase(Phase.PRE_MARSHAL, ++i*1000));
+       out.add(new Phase(Phase.MARSHAL, ++i*1000));
+       out.add(new Phase(Phase.POST_MARSHAL, ++i*1000));
        
        out.add(new Phase(Phase.USER_STREAM, ++i*1000));
        out.add(new Phase(Phase.POST_STREAM, ++i*1000));
        out.add(new Phase(Phase.SEND, ++i*1000));
        out.add(new Phase(Phase.SEND_ENDING, ++i*1000));
-       out.add(new Phase(Phase.ENCODE_ENDING, ++i*1000));
+       out.add(new Phase(Phase.ENCODE_MARSHAL, ++i*1000));
        
        out.add(new Phase(Phase.WRITE_ENDING, ++i*1000));
        out.add(new Phase(Phase.PRE_STREAM_ENDING, ++i*1000));
@@ -85,9 +85,9 @@ public class WmixPhasePolicy implements PhasePolicy
     private void createIn() {
         in = new SortedArraySet<Phase>();
         int i=0;
-        in.add(new Phase(Phase.PRE_DECODE, ++i*1000));
-        in.add(new Phase(Phase.DECODE, ++i*1000));
-        in.add(new Phase(Phase.POST_DECODE, ++i*1000));
+        in.add(new Phase(Phase.PRE_UNMARSHAL, ++i*1000));
+        in.add(new Phase(Phase.UNMARSHAL, ++i*1000));
+        in.add(new Phase(Phase.POST_UNMARSHAL, ++i*1000));
         
         in.add(new Phase(Phase.PRE_LOGICAL, ++i*1000));
         in.add(new Phase(Phase.USER_LOGICAL, ++i*1000));

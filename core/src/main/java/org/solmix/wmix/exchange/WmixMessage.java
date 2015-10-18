@@ -33,6 +33,9 @@ public class WmixMessage extends DefaultMessage
     private static final long serialVersionUID = -4159735280112029078L;
     public static final String HTTP_REQUEST = "HTTP.REQUEST";
     public static final String HTTP_RESPONSE = "HTTP.RESPONSE";
+    public static final String RESPONSE = "response";
+    public static final String REQUEST = "request";
+    public static final String SESSION ="session";
     public static final String HTTP_REQUEST_METHOD="HTTP.REQUEST.METHOD";
     public static final String REQUEST_REDIRECTED = "http.request.redirected";
 }

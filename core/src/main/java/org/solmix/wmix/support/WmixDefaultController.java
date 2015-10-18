@@ -22,6 +22,9 @@ package org.solmix.wmix.support;
 import static org.solmix.wmix.exchange.WmixMessage.HTTP_REQUEST;
 import static org.solmix.wmix.exchange.WmixMessage.HTTP_REQUEST_METHOD;
 import static org.solmix.wmix.exchange.WmixMessage.HTTP_RESPONSE;
+import static org.solmix.wmix.exchange.WmixMessage.REQUEST;
+import static org.solmix.wmix.exchange.WmixMessage.RESPONSE;
+import static org.solmix.wmix.exchange.WmixMessage.SESSION;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -134,6 +137,7 @@ public class WmixDefaultController implements Controller
         
        
         WmixMessage msg = new WmixMessage();
+        msg.setRequest(true);
         Exchange ex = new DefaultExchange();
         setupExchange(ex,request,response);
         ex.setIn(msg);
@@ -174,9 +178,9 @@ public class WmixDefaultController implements Controller
        ex.put(HttpServletRequest.class, request);
        ex.put(HttpServletResponse.class, response);
        ex.put(HttpSession.class, request.getSession());
-       ex.put("request", request);
-       ex.put("response", response);
-       ex.put("session", request.getSession());
+       ex.put(REQUEST, request);
+       ex.put(RESPONSE, response);
+       ex.put(SESSION, request.getSession());
        ParameterParser parameterParser = new DefaultParameterParser(ex, request, upload, filters, trimming, htmlFieldSuffix);
        ex.put(ParameterParser.class, parameterParser);
        
