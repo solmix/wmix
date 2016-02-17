@@ -26,13 +26,13 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.solmix.commons.util.Assert;
 import org.solmix.commons.util.ServletUtils;
+import org.solmix.commons.util.StringUtils;
 import org.solmix.runtime.Container;
 import org.solmix.runtime.ContainerFactory;
 import org.solmix.wmix.Components;
 import org.solmix.wmix.RootController;
-import org.solmix.wmix.context.WmixContextLoaderListener;
+import org.solmix.wmix.osgi.ComponentsLoaderListener;
 import org.solmix.wmix.util.RequestURIFilter;
 
 /**
@@ -63,23 +63,36 @@ public class WmixFilter extends AbstractWmixFilter {
     @Override
     protected void init() throws Exception {
         Container container = findContainer();
-        if(container!=null){
-        	components= container.getExtension(Components.class);
-        	if(this.passThroughFilter!=null){
-        		RootController root=components.getRootController();
-            	if(root instanceof PassThroughSupport){
-            		((PassThroughSupport)root).setPassThroughFilter(passThroughFilter);
-            	}else{
-            		LOG.warn("You have specified pass through Filter in /WEB-INF/web.xml.  "
+        if (container != null) {
+            components = container.getExtension(Components.class);
+            if (this.passThroughFilter != null) {
+                RootController root = components.getRootController();
+                if (root instanceof PassThroughSupport) {
+                    ((PassThroughSupport) root).setPassThroughFilter(passThroughFilter);
+                } else {
+                    LOG.warn(
+                        "You have specified pass through Filter in /WEB-INF/web.xml.  "
                             + "It will not take effect because the implementation of WebxRootController ({}) does not support this feature.",
-                            root.getClass().getName());
-            	}
-        	
-        	}
-    	}else{
-    		throw new ServletException("No specified container");
-    	}
-    	
+                        root.getClass().getName());
+                }
+
+            }
+        } else {
+            
+            String name =getServletContext().getInitParameter("componentsName");
+            if(StringUtils.isEmpty(name)){
+                name=Components.DEFAULT_NAME;
+            }
+            Object cobj = getServletContext().getAttribute(ComponentsLoaderListener.getComponentsContextAttributeName(name));
+            if (cobj instanceof Components) {
+                components = (Components) cobj;
+            }
+
+        }
+        if (components == null) {
+            throw new ServletException("No specified components");
+        }
+
     }
     @Override
     protected void doFilter(HttpServletRequest request,
@@ -115,7 +128,7 @@ public class WmixFilter extends AbstractWmixFilter {
 
     public String getServletContainerKey() {
         return servletContainerKey == null ? 
-            WmixContextLoaderListener.CONTAINER_KEY
+            Components.CONTAINER_KEY
             : servletContainerKey;
     }
 
@@ -130,7 +143,6 @@ public class WmixFilter extends AbstractWmixFilter {
     			container=(Container)cobj;
     		}
     	}
-    	Assert.assertNotNull(container, "No solmix Container  \"%s\" found : not registered?",key);
         return container;
     }
 

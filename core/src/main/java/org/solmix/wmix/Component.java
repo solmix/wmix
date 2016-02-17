@@ -33,10 +33,16 @@ import org.solmix.runtime.ContainerAware;
 public interface Component extends ContainerAware {
 
     /**
+     * 组件在注册的时候标示自己应该属于那个components,components在添加组件的时候只找属于自己的.
+     */
+    String COMP_BELONG_TO="org.solmix.wmix.components";
+    /**
      * 所属Components集合。
      * @return
      */
     Components getComponents();
+    
+    void setComponents(Components components);
     
     /**
      * 获取Component名称。

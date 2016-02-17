@@ -22,6 +22,7 @@ package org.solmix.wmix.config;
 import org.junit.Assert;
 import org.junit.Test;
 import org.solmix.wmix.ComponentConfig;
+import org.solmix.wmix.Components;
 import org.solmix.wmix.ComponentsConfig;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -38,7 +39,7 @@ public class ComponentsConfigTest extends Assert {
         String location = "org/solmix/wmix/config/rootComponents.xml";
         ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext(location);
         assertNotNull(ctx);
-        ComponentsConfig o = (ComponentsConfig) ctx.getBean(ComponentsConfig.DEFAULT_NAME);
+        ComponentsConfig o = (ComponentsConfig) ctx.getBean(Components.DEFAULT_NAME);
         assertNotNull(o);
         ComponentsConfig wcf = ctx.getBean(ComponentsConfig.class);
         assertNotNull(wcf);

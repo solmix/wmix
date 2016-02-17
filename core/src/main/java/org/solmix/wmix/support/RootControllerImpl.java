@@ -41,6 +41,9 @@ public class RootControllerImpl extends AbstractRootController implements RootCo
 
 	      Component component = getComponents().matchedComponent(path);
 	      boolean served = false;
+	      if(component==null){
+	          return served;
+	      }
 	      Container c= component.getContainer();
 	      Component orign = null;
             try {

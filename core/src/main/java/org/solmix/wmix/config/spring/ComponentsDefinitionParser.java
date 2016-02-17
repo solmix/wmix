@@ -25,7 +25,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.solmix.commons.util.DOMUtils;
 import org.solmix.commons.util.StringUtils;
 import org.solmix.runtime.support.spring.AbstractBeanDefinitionParser;
-import org.solmix.wmix.ComponentsConfig;
+import org.solmix.wmix.Components;
 import org.solmix.wmix.config.ComponentConfigImpl;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
@@ -53,7 +53,7 @@ implements BeanDefinitionParser {
         AbstractBeanDefinition definition, ParserContext ctx) {
            String  name = element.getAttribute("name");
            if (StringUtils.isEmpty(name)) {
-               name = ComponentsConfig.DEFAULT_NAME;
+               name = Components.DEFAULT_NAME;
            }
            if(ctx.getRegistry().containsBeanDefinition(name)){
                name = name + counter.getAndIncrement();
@@ -92,6 +92,7 @@ implements BeanDefinitionParser {
             bean.addPropertyValue("endpoints", lis);
         }
     }
+    @Override
     protected void parseNameAttribute(Element element, ParserContext ctx,
         BeanDefinitionBuilder bean, String val) {
         parseAttribute(bean, element, "name", val, ctx);

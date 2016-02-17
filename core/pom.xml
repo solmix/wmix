@@ -10,22 +10,27 @@
   <dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
-		</dependency>
+			<scope>provided</scope>
+  </dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-beans</artifactId>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 	  		<groupId>org.springframework</groupId>
 	  		<artifactId>spring-web</artifactId>
-	  	</dependency>
+	  		<scope>provided</scope>
+		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.solmix.common</groupId>
@@ -57,4 +62,38 @@
 			<scope>test</scope>
 		</dependency>
   </dependencies>
+  <build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<extensions>true</extensions>
+				<configuration>
+					<instructions>
+						<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+						<Bundle-Category>solmix</Bundle-Category>
+						<Export-Package>${solmix.osgi.export.pkg}</Export-Package>
+						<Import-Package>${solmix.osgi.import.pkg}</Import-Package>
+						<!-- <DynamicImport-Package>${solmix.osgi.dynamic.import}</DynamicImport-Package> -->
+						<_failok>false</_failok>
+						<_removeheaders>Ignore-Package,Include-Resource,Private-Package</_removeheaders>
+					</instructions>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	<properties>
+		<solmix.osgi.export.pkg>org.solmix.wmix*</solmix.osgi.export.pkg>
+		<solmix.osgi.import.pkg>
+			!org.solmix.wmix*,
+			!org.junit,
+			!org.hamcrest,
+			org.springframework*;resolution:=optional;version="${spring.version}",
+			org.apache.aries*;version="[1.0,2)";resolution:=optional,
+			*
+		</solmix.osgi.import.pkg>
+		<solmix.osgi.dynamic.import>*</solmix.osgi.dynamic.import>
+	</properties>
+	<packaging>bundle</packaging>
+	<name>Solmix :: wmix :: Core</name>
 </project>

@@ -23,7 +23,6 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
-import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -41,17 +40,6 @@ import javax.servlet.http.HttpServletResponseWrapper;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.solmix.commons.util.Assert;
-import org.springframework.beans.BeanWrapper;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.MutablePropertyValues;
-import org.springframework.beans.PropertyAccessorFactory;
-import org.springframework.beans.PropertyValue;
-import org.springframework.beans.PropertyValues;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceEditor;
-import org.springframework.core.io.ResourceLoader;
-import org.springframework.web.context.support.ServletContextResourceLoader;
 
 /**
  * 
@@ -65,7 +53,7 @@ public abstract class AbstractWmixFilter implements Filter {
 
     private FilterConfig filterConfig;
 
-    private final Set<String> requiredProperties = new HashSet<String>();
+    protected final Set<String> requiredProperties = new HashSet<String>();
 
     protected final void addRequiredProperty(String name) {
         this.requiredProperties.add(name);
@@ -110,19 +98,7 @@ public abstract class AbstractWmixFilter implements Filter {
     public void init(FilterConfig config) throws ServletException {
         filterConfig = config;
         logInBothServletAndLoggingSystem("Initializing filter: "   + getFilterName());
-
-        try {
-            PropertyValues pvs = new FilterConfigPropertyValues(getFilterConfig(), requiredProperties);
-            BeanWrapper bw = PropertyAccessorFactory.forBeanPropertyAccess(this);
-            ResourceLoader resourceLoader = new ServletContextResourceLoader( getServletContext());
-            bw.registerCustomEditor(Resource.class, new ResourceEditor( resourceLoader));
-            initBeanWrapper(bw);
-            bw.setPropertyValues(pvs, true);
-        } catch (Exception e) {
-            throw new ServletException(
-                "Failed to set bean properties on filter: " + getFilterName(),e);
-        }
-
+        initContext(config);
         try {
             init();
         } catch (Exception e) {
@@ -134,7 +110,9 @@ public abstract class AbstractWmixFilter implements Filter {
             + getFilterName() + ": initialization completed");
     }
 
-    protected void initBeanWrapper(BeanWrapper bw) throws BeansException {
+  
+    protected void initContext(FilterConfig config) throws ServletException {
+        
     }
 
     public final FilterConfig getFilterConfig() {
@@ -158,28 +136,7 @@ public abstract class AbstractWmixFilter implements Filter {
         LOG.info(msg);
     }
 
-    private static class FilterConfigPropertyValues extends
-        MutablePropertyValues {
-
-        private static final long serialVersionUID = -5359131251714023794L;
-
-        public FilterConfigPropertyValues(FilterConfig config,
-            Set<String> requiredProperties) throws ServletException {
-
-            for (Enumeration<?> e = config.getInitParameterNames(); e.hasMoreElements();) {
-                String key = (String) e.nextElement();
-                String value = config.getInitParameter(key);
-
-                addPropertyValue(new PropertyValue(key, value));
-                requiredProperties.remove(key);
-            }
-
-            Assert.assertTrue(requiredProperties.isEmpty(),
-                "Initialization for filter %s failed.  "
-                    + "The following required properties were missing: %s",
-                config.getFilterName(), requiredProperties);
-        }
-    }
+  
     private static class NoBodyResponse extends HttpServletResponseWrapper {
         private final NoBodyOutputStream noBody = new NoBodyOutputStream();
         private PrintWriter writer;

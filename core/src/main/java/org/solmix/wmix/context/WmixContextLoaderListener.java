@@ -73,19 +73,17 @@ public class WmixContextLoaderListener extends ContextLoaderListener {
 
     private static final Logger LOG = LoggerFactory.getLogger(WmixContextLoaderListener.class);
 
-    public static final String CONTAINER_KEY = WmixContextLoaderListener.class.getName() + ".CONTAINER_KEY";
-
-    private ServletContext servletContext;
+   private ServletContext servletContext;
 
     private String componentsName;
 
     private WebApplicationContext parentSpringContext;
     
     public String getComponentsName() {
-        return componentsName == null ? org.solmix.wmix.ComponentsConfig.DEFAULT_NAME : componentsName;
+        return componentsName == null ? Components.DEFAULT_NAME : componentsName;
     }
-    public String getComponentContextAttributeName(String componentName) {
-        return CONTAINER_KEY + "_"+componentName;
+    public String getContainerContextAttributeName(String componentName) {
+        return Components.CONTAINER_KEY + "_"+componentName;
     }
     /** 设置context中<code>ComponentsConfig</code>的名称。 */
     public void setComponentsName(String webxConfigurationName) {
@@ -95,9 +93,10 @@ public class WmixContextLoaderListener extends ContextLoaderListener {
     public void contextInitialized(ServletContextEvent event) {
         super.contextInitialized(event);
         servletContext=event.getServletContext();
-        setComponentsName(servletContext.getInitParameter("componentsName"));
+        String name =servletContext.getInitParameter("componentsName");
+        setComponentsName(name==null?Components.DEFAULT_NAME:name);
         
-        if (servletContext.getAttribute(CONTAINER_KEY) != null) {
+        if (servletContext.getAttribute(Components.CONTAINER_KEY) != null) {
             throw new IllegalStateException("Cannot initialize context because there is already a root solmix Conainer present - "
                 + "check whether you have multiple ContextLoader* definitions in your web.xml!");
         }
@@ -115,10 +114,11 @@ public class WmixContextLoaderListener extends ContextLoaderListener {
         if (LOG.isInfoEnabled()) {
             LOG.info("Initial Web context,used path:" + root + " As [solmix.base]");
         }
-        servletContext.setAttribute(CONTAINER_KEY, parent);
+        servletContext.setAttribute(Components.CONTAINER_KEY, parent);
         setServletContextInContainer(parent);
         ComponentsConfig wc=parentSpringContext.getBean(getComponentsName(), ComponentsConfig.class);
         ComponentsImpl components = createComponents(wc,parent);
+        components.setName(getComponentsName());
         //Components 放入Container中.
         parent.setExtension(components,Components.class);
         parent.addListener(components);
@@ -138,7 +138,7 @@ public class WmixContextLoaderListener extends ContextLoaderListener {
        Enumeration<String> names= sc.getAttributeNames();
       while(names.hasMoreElements()){
           String name=names.nextElement();
-          if(name.startsWith(CONTAINER_KEY)){
+          if(name.startsWith(Components.CONTAINER_KEY)){
             Object c=  sc.getAttribute(name);
             if(c instanceof Container){
                 sc.removeAttribute(name);
@@ -184,7 +184,7 @@ public class WmixContextLoaderListener extends ContextLoaderListener {
             root = (RootController) BeanUtils.instantiateClass(componentsConfig.getRootControllerClass());
             configure(parent, root);
         }
-        ComponentsImpl components = new ComponentsImpl(parent,componentsConfig.getDefaultComponent(),root,componentsConfig);
+        ComponentsImpl components = new ComponentsImpl(parent,componentsConfig.getDefaultComponent(),root,componentsConfig,servletContext);
         configure(parent,components);
         for (String componentName : componentNames) {
             
@@ -200,7 +200,7 @@ public class WmixContextLoaderListener extends ContextLoaderListener {
                     controller = (Controller) BeanUtils.instantiateClass(componentsConfig.getDefaultControllerClass());
                 }
                 ComponentImpl component = new ComponentImpl(components, componentName, componentPath,
-                    componentName.equals(componentsConfig.getDefaultComponent()), controller, getComponentsName(), componentConfig.getEndpoints());
+                    componentName.equals(componentsConfig.getDefaultComponent()), controller, componentConfig.getEndpoints());
 
                 components.addComponent(component);
 
@@ -215,7 +215,7 @@ public class WmixContextLoaderListener extends ContextLoaderListener {
                 //父Container放入子container中。
                 componentContainer.setProperties(parent.getProperties());
                 // 将Container保存在servletContext中
-                String attrName = getComponentContextAttributeName(componentName);
+                String attrName = getContainerContextAttributeName(componentName);
                 getServletContext().setAttribute(attrName, componentContainer);
 
                 //在Container中设置ServletContext.
@@ -231,7 +231,7 @@ public class WmixContextLoaderListener extends ContextLoaderListener {
                     controller = (Controller) BeanUtils.instantiateClass(componentsConfig.getDefaultControllerClass());
                 }
                 ComponentImpl component = new ComponentImpl(components, componentName, componentPath,
-                    componentName.equals(componentsConfig.getDefaultComponent()), controller, getComponentsName(), componentConfig.getEndpoints());
+                    componentName.equals(componentsConfig.getDefaultComponent()), controller, componentConfig.getEndpoints());
 
                 components.addComponent(component);
                 componentContainer.addListener(component);
@@ -260,7 +260,7 @@ public class WmixContextLoaderListener extends ContextLoaderListener {
         componentContainer.setProperties(parent.getProperties());
         component.setContainer(componentContainer);
         // 将Container保存在servletContext中
-        String attrName = getComponentContextAttributeName(componentName);
+        String attrName = getContainerContextAttributeName(componentName);
         getServletContext().setAttribute(attrName, componentContainer);
 
         //在Container中设置ServletContext.
@@ -374,20 +374,27 @@ public class WmixContextLoaderListener extends ContextLoaderListener {
         private final RootComponent              rootComponent;
         private final String                     defaultComponentName;
         private final RootController         rootController;
+        private final ServletContext servletContext; 
+        private String name;
         public ComponentsImpl(Container c, String defaultComponent,
-            RootController root, ComponentsConfig parentConfig) {
+            RootController root, ComponentsConfig parentConfig,ServletContext servletContext) {
             this.componentsConfig =Assert. assertNotNull(parentConfig, "no root components configuration");
             this.parentContainer=c;
             this.components= new HashMap<String, Component>();
             this.rootComponent= new RootComponent();
             this.defaultComponentName=defaultComponent;
             this.rootController=Assert.assertNotNull(root,"No root Controller");
+            this.servletContext=servletContext;
             rootController.init(this);
+        }
+        public void setName(String componentsName) {
+           this.name=componentsName;
         }
         @Override
         public ComponentsConfig getComponentsConfig() {
             return componentsConfig;
         }
+        
         /**
          * @param component
          */
@@ -516,31 +523,42 @@ public class WmixContextLoaderListener extends ContextLoaderListener {
                 Assert.unsupportedOperation("RootComponent.getEndpoints()");
                 return null;
             }
+
+            @Override
+            public void setComponents(Components components) {
+               
+            }
         }
       
         @Override
         public Iterator<Component> iterator() {
             return components.values().iterator();
         }
+        @Override
+        public String getName() {
+            return name;
+        }
+        @Override
+        public ServletContext getServletContext() {
+            return servletContext;
+        }
     }
     private static class ComponentImpl implements Component,ContainerListener{
 
-        private final Components        components;
+        private  Components               components;
         private final String                name;
         private final String                componentPath;
-        private final Controller        controller;
-        private final String                configurationName;
-        private       Container container;
+        private final Controller            controller;
+        private       Container            container;
         private List<WmixEndpoint> endpoints;
 
         public ComponentImpl(Components components, String name, String path,
             boolean defaultComponent, Controller controller,
-            String configurationName,List<WmixEndpoint> endpoints) {
+            List<WmixEndpoint> endpoints) {
             this.components = components;
             this.name = name;
             this.controller = controller;
             this.endpoints=endpoints;
-            this.configurationName = configurationName;
             path = StringUtils.trimToNull(FileUtils.normalizeAbsolutePath(path, true));
             if (defaultComponent) {
                 Assert.assertTrue(path == null, "default component \"%s\" should not have component path \"%s\"", name, path);
@@ -576,7 +594,7 @@ public class WmixContextLoaderListener extends ContextLoaderListener {
         public ComponentConfig getComponentConfig() {
             ConfiguredBeanProvider provider = container.getExtension(ConfiguredBeanProvider.class);
             if (provider != null) {
-                return provider.getBeanOfType(configurationName,ComponentConfig.class);
+                return provider.getBeanOfType(name,ComponentConfig.class);
             } else {
                 return null;
             }
@@ -597,14 +615,14 @@ public class WmixContextLoaderListener extends ContextLoaderListener {
         public Container getContainer() {
             return container;
         }
-        /**
-         * {@inheritDoc}
-         * 
-         * @see org.solmix.wmix.Component#getEndpoints()
-         */
+   
         @Override
         public List<WmixEndpoint> getEndpoints() {
             return endpoints;
+        }
+        @Override
+        public void setComponents(Components components) {
+            this.components=components;
         }
         
     }

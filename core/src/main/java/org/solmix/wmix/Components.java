@@ -18,6 +18,8 @@
  */
 package org.solmix.wmix;
 
+import javax.servlet.ServletContext;
+
 import org.solmix.runtime.Container;
 
 
@@ -30,6 +32,14 @@ import org.solmix.runtime.Container;
 
 public interface Components extends Iterable<Component>{
 
+    String CONTAINER_KEY = Components.class.getName() + ".CONTAINER_KEY";
+    String COMPONENTS_KEY = Components.class.getName() + ".DEFAULT_COMPONENTS";
+    String DEFAULT_NAME = "wmix-components";
+    /**
+     * 获取Components名称。
+     * @return
+     */
+    String getName();
     /**
      * 获取所有{@link Component}名称。
      * 
@@ -80,4 +90,10 @@ public interface Components extends Iterable<Component>{
      * @return
      */
     Container getParentContainer();
+    
+    /**
+     * 所属的ServletContext
+     * @return
+     */
+    ServletContext getServletContext();
 }

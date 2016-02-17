@@ -30,7 +30,6 @@ import java.util.Map;
 
 public interface ComponentsConfig
 {
-    String DEFAULT_NAME = "wmix-components-config";
 
     String getInternalPrefix();
 

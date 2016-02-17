@@ -21,7 +21,6 @@ package org.solmix.wmix;
 import javax.servlet.ServletContext;
 
 import org.solmix.runtime.Container;
-import org.solmix.wmix.context.WmixContextLoaderListener;
 
 
 /**
@@ -46,7 +45,7 @@ public class ComponentLoader
         Container container = compoent.getContainer();
         ServletContext sc =container.getExtension(ServletContext.class);
         if(sc!=null){
-           Object o= sc.getAttribute(WmixContextLoaderListener.CONTAINER_KEY+"_"+other);
+           Object o= sc.getAttribute(Components.CONTAINER_KEY+"_"+other);
            if(o instanceof Container)
                return (Container)o;
         }
