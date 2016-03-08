@@ -20,7 +20,7 @@ package org.solmix.wmix.upload.support;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * 继承自commons-fileupload-1.2.1的同名类，改进了如下内容：
+ * 继承自commons-fileupload-1.3.1的同名类，改进了如下内容：
  * <ul>
  * <li>假如<code>request.getCharacterEncoding()</code>返回<code>null</code> ，那么返回默认值
  * <code>ISO-8859-1</code>。该方法将被用来解析header，其中包括field name，file name等。原始类在
@@ -30,6 +30,7 @@ import javax.servlet.http.HttpServletRequest;
  *
  */
 public class ServletRequestContext extends org.apache.commons.fileupload.servlet.ServletRequestContext {
+    
     public static final String DEFAULT_CHARSET = "ISO-8859-1";
 
     public ServletRequestContext(HttpServletRequest request) {

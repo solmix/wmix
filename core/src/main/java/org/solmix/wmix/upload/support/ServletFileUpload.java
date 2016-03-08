@@ -67,7 +67,7 @@ public class ServletFileUpload extends org.apache.commons.fileupload.servlet.Ser
 
     @Override
     public List<FileItem> parseRequest(HttpServletRequest request) throws FileUploadException {
-        return parseRequest(new ServletRequestContext(request));
+        return parseRequest(new org.apache.commons.fileupload.servlet.ServletRequestContext(request));
     }
 
     @Override
