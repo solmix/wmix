@@ -71,7 +71,7 @@ public class ComponentsLoaderListener implements ServletContextListener
        
         DefaultComponents components = new DefaultComponents(name, null, root,servletContext);
         BundleContext bundleContext = getBundleContext();
-        tracker = new ComponentTracker(bundleContext, components);
+        tracker = getComponentTracker(bundleContext, components);
         tracker.open();
         
         Hashtable<String, String> prop = new Hashtable<String, String>();
@@ -105,6 +105,10 @@ public class ComponentsLoaderListener implements ServletContextListener
             components.destroy();
         }
 
+    }
+    
+    protected ComponentTracker getComponentTracker(BundleContext context,DefaultComponents componets){
+        return new ComponentTracker(context,componets);
     }
 
 }
