@@ -36,6 +36,20 @@ public class ComponentsLoaderListener implements ServletContextListener
     
     private ComponentTracker tracker;
     private ServiceRegistration<Components> registration;
+    
+    private String defaultComponentName;
+    
+    public ComponentsLoaderListener(){
+        
+    }
+    
+    public ComponentsLoaderListener(String defaultComponetName){
+        this.defaultComponentName=defaultComponetName;
+    }
+    
+    public DefaultComponents getComponents(){
+        return components;
+    }
 
     public String getComponentsName() {
         return componentsName == null ? Components.DEFAULT_NAME : componentsName;
@@ -69,7 +83,7 @@ public class ComponentsLoaderListener implements ServletContextListener
 
         RootController root = new RootControllerImpl();
        
-        DefaultComponents components = new DefaultComponents(name, null, root,servletContext);
+        DefaultComponents components = new DefaultComponents(name, defaultComponentName, root,servletContext);
         BundleContext bundleContext = getBundleContext();
         tracker = getComponentTracker(bundleContext, components);
         tracker.open();
@@ -77,7 +91,7 @@ public class ComponentsLoaderListener implements ServletContextListener
         Hashtable<String, String> prop = new Hashtable<String, String>();
         prop.put(Component.COMP_BELONG_TO, components.getName());
         registration = bundleContext.registerService(Components.class, components, prop);
-
+        components.getDefaultComponent();
         this.components = components;
         servletContext.setAttribute(getComponentsContextAttributeName(name), components);
 

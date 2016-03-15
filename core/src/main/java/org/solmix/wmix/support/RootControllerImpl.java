@@ -47,16 +47,19 @@ public class RootControllerImpl extends AbstractRootController implements RootCo
 	      Container c= component.getContainer();
 	      Component orign = null;
             try {
+                if(c!=null)
                 orign = c.getExtension(Component.class);
             } catch (Exception e) {
                 /*Ignore*/
             }
 	      if (component != null) {
 	            try {
+	                if(c!=null)
 	                c.setExtension(component, Component.class);
 	                served = component.getController().service(request,response);
 	            } finally {
 	                if(orign!=null)
+	                    if(c!=null)
 	            	c.setExtension(orign, Component.class);
 	            }
 	        }

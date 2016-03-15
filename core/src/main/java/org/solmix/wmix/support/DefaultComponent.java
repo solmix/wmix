@@ -24,6 +24,16 @@ public class DefaultComponent implements Component,ContainerAware
     public DefaultComponent(){
         controller= new WmixDefaultController();
     }
+    
+    public DefaultComponent(String name,String path,Controller controller){
+        this.controller=controller;
+        this.name=name;
+        this.componentPath=path;
+    }
+    public DefaultComponent(String name,Controller controller){
+       this(name,null,controller);
+    }
+    
     @Override
     public String getName() {
         return name;
