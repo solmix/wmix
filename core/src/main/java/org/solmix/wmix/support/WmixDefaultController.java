@@ -154,10 +154,7 @@ public class WmixDefaultController implements Controller
        
         msg.put(Message.PATH_INFO,ServletUtils.getResourcePath(request) );
         
-        String basePath = ServletUtils.getBaseURL(request);
-        if (!StringUtils.isEmpty(basePath)) {
-            msg.put(Message.BASE_PATH, basePath);
-        }
+      
         
         String contentType = request.getContentType();
         msg.put(Message.CONTENT_TYPE, contentType);
@@ -178,6 +175,10 @@ public class WmixDefaultController implements Controller
        ex.put(HttpServletRequest.class, request);
        ex.put(HttpServletResponse.class, response);
        ex.put(HttpSession.class, request.getSession());
+       String basePath = ServletUtils.getBaseURL(request);
+       if (!StringUtils.isEmpty(basePath)) {
+           ex.put(Message.BASE_PATH, basePath);
+       }
        ex.put(REQUEST, request);
        ex.put(RESPONSE, response);
        ex.put(SESSION, request.getSession());

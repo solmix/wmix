@@ -43,6 +43,11 @@ public class ComponentTracker extends ServiceTracker<Component, Component>
 
     @Override
     public void removedService(ServiceReference<Component> reference, Component service){
-        components.removeComponent(service);
+        String componentsName= components.getName();
+        Object o=reference.getProperty(Component.COMP_BELONG_TO);
+        if(o!=null&&o.equals(componentsName)){
+            components.removeComponent(service);
+        }
+       
     }
 }

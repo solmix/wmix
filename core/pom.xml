@@ -60,6 +60,11 @@
 			<artifactId>logback-classic</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.solmix.services</groupId>
+			<artifactId>solmix-service-template</artifactId>
+			<scope>provided</scope>
+		</dependency>
   </dependencies>
   <build>
 		<plugins>
