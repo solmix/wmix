@@ -122,10 +122,10 @@ public class WmixFilterTest extends AbstractTests
     @Test
     public void componentPath_wrong() throws Exception {
         File webInf = new File(TestUtils.srcdir, "app2/WEB-INF");
-        File webXml = new File(webInf, "web.xml");
+        File xml = new File(webInf, "web.xml");
 
         try {
-            new PatchedServletRunner(webXml, "");
+            new PatchedServletRunner(xml, "");
             fail();
         } catch (IllegalArgumentException e) {
             Assert.assertThat(e, TestUtils.exception("default component \"app3\" should not have component path \"/app3\""));

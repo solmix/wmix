@@ -64,8 +64,8 @@ public class ComponentsLoaderListener implements ServletContextListener
     }
 
     /** 设置context中<code>ComponentsConfig</code>的名称。 */
-    public void setComponentsName(String webxConfigurationName) {
-        this.componentsName = StringUtils.trimToNull(webxConfigurationName);
+    public void setComponentsName(String configurationName) {
+        this.componentsName = StringUtils.trimToNull(configurationName);
     }
 
     @Override

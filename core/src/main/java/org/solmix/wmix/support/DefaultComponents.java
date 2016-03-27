@@ -103,7 +103,7 @@ public class DefaultComponents implements Components
             }
 
             // path刚好等于componentPath，或者path以componentPath/为前缀
-            if (path.length() == componentPath.length() || path.charAt(componentPath.length()) == '/') {
+            if (path.length() == componentPath.length() || path.charAt(componentPath.length()) == '/'||componentPath.equals("/")) {
                 matched = component;
                 break;
             }

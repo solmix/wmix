@@ -86,8 +86,8 @@ public class WmixContextLoaderListener extends ContextLoaderListener {
         return Components.CONTAINER_KEY + "_"+componentName;
     }
     /** 设置context中<code>ComponentsConfig</code>的名称。 */
-    public void setComponentsName(String webxConfigurationName) {
-        this.componentsName = StringUtils.trimToNull(webxConfigurationName);
+    public void setComponentsName(String configurationName) {
+        this.componentsName = StringUtils.trimToNull(configurationName);
     }
     @Override
     public void contextInitialized(ServletContextEvent event) {

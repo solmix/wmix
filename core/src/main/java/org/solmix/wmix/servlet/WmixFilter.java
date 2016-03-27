@@ -20,12 +20,17 @@
 package org.solmix.wmix.servlet;
 
 import java.io.IOException;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.solmix.commons.util.DataUtils;
 import org.solmix.commons.util.ServletUtils;
 import org.solmix.commons.util.StringUtils;
 import org.solmix.runtime.Container;
@@ -45,7 +50,7 @@ public class WmixFilter extends AbstractWmixFilter {
 
     private String servletContainerKey;
     
-    private String internalPrefix;
+    private String internalPathPrefix;
 
     private RequestURIFilter excludeFilter;
 
@@ -72,7 +77,7 @@ public class WmixFilter extends AbstractWmixFilter {
                 } else {
                     LOG.warn(
                         "You have specified pass through Filter in /WEB-INF/web.xml.  "
-                            + "It will not take effect because the implementation of WebxRootController ({}) does not support this feature.",
+                            + "It will not take effect because the implementation of WmixRootController ({}) does not support this feature.",
                         root.getClass().getName());
                 }
 
@@ -99,19 +104,15 @@ public class WmixFilter extends AbstractWmixFilter {
         HttpServletResponse response, FilterChain chain) throws IOException,ServletException {
     	  String path = ServletUtils.getResourcePath(request);
           if (isExcluded(path)) {
-              if(LOG.isTraceEnabled())
-                  LOG.trace("Excluded request: {}", path);
+              LOG.trace("Excluded request: {}", path);
               chain.doFilter(request, response);
               return;
           } else {
-              if(LOG.isTraceEnabled())
-                  LOG.trace("Accepted and started to process request: {}", path);
+              LOG.trace("Accepted and started to process request: {}", path);
           }
           try {
 			components.getRootController().service(request, response, chain);
           } catch (IOException e) {
-            throw e;
-          } catch (ServletException e) {
             throw e;
           } catch (Exception e) {
             throw new ServletException(e);
@@ -149,19 +150,46 @@ public class WmixFilter extends AbstractWmixFilter {
     public void setServletContainerKey(String containerKey) {
         servletContainerKey = containerKey;
     }
+    @Override
+    protected void initContext(FilterConfig config) throws ServletException {
+        Map<String,String> properties  = new HashMap<String,String>();
+        for (Enumeration<?> e = config.getInitParameterNames(); e.hasMoreElements();) {
+            String key = (String) e.nextElement();
+            String value = config.getInitParameter(key);
+
+            properties.put(key, value);
+        }
+        try {
+            DataUtils.setProperties(properties, this);
+        } catch (Exception e) {
+           throw new ServletException("Auto set filter config to filter",e);
+        }
+
+    }
 
     boolean isExcluded(String path) {
-        // 如果指定了excludes，并且当前requestURI匹配任何一个exclude pattern，
-        // 则立即放弃控制，将控制还给servlet engine。
-        // 但对于internal path，不应该被排除掉，否则internal页面会无法正常显示。
         if (excludeFilter != null && excludeFilter.matches(path)) {
-//            if (!isInternalRequest(path)) {
+            if (!isInternalRequest(path)) {
                 return true;
-//            }
+            }
         }
         return false;
     }
+    private boolean isInternalRequest(String path) {
+        if (internalPathPrefix == null) {
+            return false;
+        }
 
+        if (path.equals(internalPathPrefix)) {
+            return true;
+        }
+
+        if (path.startsWith(internalPathPrefix) && path.charAt(internalPathPrefix.length()) == '/') {
+            return true;
+        }
+
+        return false;
+    }
     /**
      * @return
      */

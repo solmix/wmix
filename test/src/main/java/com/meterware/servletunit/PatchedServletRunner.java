@@ -33,10 +33,10 @@ public class PatchedServletRunner extends ServletRunner {
         patchInvocationContextFactory();
     }
 
-    public PatchedServletRunner(File webXml, String contextPath) throws IOException, SAXException {
+    public PatchedServletRunner(File xml, String contextPath) throws IOException, SAXException {
         try {
             Field _application = TestUtils.getAccessibleField(getClass(), "_application");
-            _application.set(this, new PatchedWebApplication(HttpUnitUtils.newParser().parse(webXml), webXml
+            _application.set(this, new PatchedWebApplication(HttpUnitUtils.newParser().parse(xml), xml
                     .getParentFile().getParentFile(), contextPath));
 
             Method completeInitialization = TestUtils.getAccessibleMethod(getClass(), "completeInitialization",
@@ -51,23 +51,23 @@ public class PatchedServletRunner extends ServletRunner {
         patchInvocationContextFactory();
     }
 
-    public PatchedServletRunner(File webXml) throws IOException, SAXException {
-        super(webXml);
+    public PatchedServletRunner(File wml) throws IOException, SAXException {
+        super(wml);
         patchInvocationContextFactory();
     }
 
-    public PatchedServletRunner(InputStream webXML, String contextPath) throws IOException, SAXException {
-        super(webXML, contextPath);
+    public PatchedServletRunner(InputStream wML, String contextPath) throws IOException, SAXException {
+        super(wML, contextPath);
         patchInvocationContextFactory();
     }
 
-    public PatchedServletRunner(InputStream webXML) throws IOException, SAXException {
-        super(webXML);
+    public PatchedServletRunner(InputStream xML) throws IOException, SAXException {
+        super(xML);
         patchInvocationContextFactory();
     }
 
-    public PatchedServletRunner(String webXMLFileSpec, EntityResolver resolver) throws IOException, SAXException {
-        super(webXMLFileSpec, resolver);
+    public PatchedServletRunner(String xMLFileSpec, EntityResolver resolver) throws IOException, SAXException {
+        super(xMLFileSpec, resolver);
         patchInvocationContextFactory();
     }
 
