@@ -11,7 +11,7 @@ import java.util.Dictionary;
 
 import javax.servlet.http.HttpSession;
 
-import org.solmix.wmix.test.TestUtils;
+import org.solmix.test.TestUtils;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.SAXException;
 

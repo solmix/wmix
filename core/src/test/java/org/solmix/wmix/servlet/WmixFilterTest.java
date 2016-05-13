@@ -36,10 +36,10 @@ import org.junit.Test;
 import org.solmix.commons.util.ServletUtils;
 import org.solmix.runtime.Container;
 import org.solmix.runtime.ContainerFactory;
+import org.solmix.test.TestUtils;
 import org.solmix.wmix.AbstractTests;
 import org.solmix.wmix.Component;
 import org.solmix.wmix.Components;
-import org.solmix.wmix.test.TestUtils;
 import org.solmix.wmix.util.RequestURIFilter;
 
 import com.meterware.servletunit.InvocationContext;

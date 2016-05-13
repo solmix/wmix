@@ -6,7 +6,7 @@ import java.net.URL;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.solmix.wmix.test.TestUtils;
+import org.solmix.test.TestUtils;
 
 import com.meterware.httpunit.FrameSelector;
 import com.meterware.httpunit.cookies.PatchedCookieJar;

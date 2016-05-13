@@ -41,7 +41,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.io.IOUtils;
 import org.solmix.commons.util.ServletUtils;
 import org.solmix.commons.util.StringUtils;
-import org.solmix.wmix.test.TestUtils;
+import org.solmix.test.TestUtils;
 
 import com.meterware.httpunit.WebResponse;
 import com.meterware.httpunit.javascript.JavaScript;

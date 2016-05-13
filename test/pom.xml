@@ -24,5 +24,10 @@
          	<artifactId>junit</artifactId>
          	<version>4.7</version>
          </dependency>
+         <dependency>
+         	<groupId>org.solmix.test</groupId>
+         	<artifactId>solmix-test</artifactId>
+         	<version>0.6.1-SNAPSHOT</version>
+         </dependency>
   </dependencies>
 </project>

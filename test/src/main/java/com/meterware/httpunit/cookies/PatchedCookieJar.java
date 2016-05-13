@@ -1,8 +1,8 @@
 
 package com.meterware.httpunit.cookies;
 
-import static org.solmix.wmix.test.TestUtils.getAccessibleField;
-import static org.solmix.wmix.test.TestUtils.getAccessibleMethod;
+import static org.solmix.test.TestUtils.getAccessibleField;
+import static org.solmix.test.TestUtils.getAccessibleMethod;
 
 import java.net.URL;
 import java.util.HashMap;
