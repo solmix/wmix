@@ -36,7 +36,7 @@ import org.solmix.runtime.Extension;
  * @author solmix.f@gmail.com
  * @version $Id$ 2015年6月13日
  */
-@Extension(name = "path")
+@Extension( "path")
 public class PathCondition implements org.solmix.wmix.condition.Condition
 {
 

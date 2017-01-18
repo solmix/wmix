@@ -21,7 +21,7 @@ import org.solmix.runtime.Container;
 import org.solmix.runtime.Extension;
 import org.solmix.runtime.bean.BeanConfigurer;
 
-@Extension(name = " http://www.solmix.org/wmix")
+@Extension( " http://www.solmix.org/wmix")
 public class ServletTransportationFactory implements PipelineFactory, TransporterFactory, TypeDetectSupport
 {
 

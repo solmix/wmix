@@ -35,7 +35,7 @@ import org.solmix.runtime.Extension;
  * @author solmix.f@gmail.com
  * @version $Id$  2015年6月12日
  */
-@Extension(name="jexl")
+@Extension("jexl")
 public class JexlCondition implements Condition
 {
     protected static final ExpressionFactory EXPRESSION_FACTORY = new JexlExpressionFactory();

@@ -17,7 +17,7 @@ import org.solmix.runtime.Extension;
  * @author solmix.f@gmail.com
  * @version $Id$  2015年6月9日
  */
-@Extension(name="wmix")
+@Extension("wmix")
 public class WmixPhasePolicy implements PhasePolicy
 {
     private SortedSet<Phase> in;
