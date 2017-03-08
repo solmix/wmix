@@ -181,7 +181,6 @@ public class ServletContextResource extends AbstractFileStreamResource
     /**
      * This implementation creates a ServletContextResource, applying the given path
      * relative to the path of the underlying file of this resource descriptor.
-     * @see org.springframework.util.StringUtils#applyRelativePath(String, String)
      */
     @Override
     public ServletContextResource createRelative(String relativePath) {
@@ -192,7 +191,6 @@ public class ServletContextResource extends AbstractFileStreamResource
     /**
      * This implementation returns the name of the file that this ServletContext
      * resource refers to.
-     * @see org.springframework.util.StringUtils#getFilename(String)
      */
     @Override
     public String getFilename() {
