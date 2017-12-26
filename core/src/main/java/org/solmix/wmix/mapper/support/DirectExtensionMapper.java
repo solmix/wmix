@@ -47,8 +47,7 @@ public class DirectExtensionMapper extends AbstractMapper {
 		}
 
 		boolean withPrefix = !StringUtils.isEmpty(getPrefix());
-		String firstTemplateName = StringUtils.join(parts,
-				TEMPLATE_NAME_SEPARATOR);
+		String firstTemplateName = StringUtils.join(parts,TEMPLATE_NAME_SEPARATOR);
 
 		if (withPrefix) {
 			firstTemplateName = getPrefix() + TEMPLATE_NAME_SEPARATOR
