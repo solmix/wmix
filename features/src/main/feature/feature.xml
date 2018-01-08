@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<features name="wmix-features-${project.version}" xmlns="http://karaf.apache.org/xmlns/features/v1.4.0">
+	<repository>mvn:org.solmix.karaf.features/solmix-services-features/${solmix.version}/xml/features</repository>
+	<feature name="wmix-core" description="Wmix core" version="${project.version}">
+		<feature>http</feature>
+		<feature version="${solmix.version}">solmix-common-exchange</feature>
+		<bundle start-level="35">mvn:commons-fileupload/commons-fileupload/${commons-fileupload.version}</bundle>
+		<bundle start-level="40">mvn:org.solmix.wmix/wmix-core/${project.version}</bundle>
+	</feature>
+</features>
