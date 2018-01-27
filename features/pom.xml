@@ -17,4 +17,5 @@
        	<scope>runtime</scope>
   	</dependency>
   </dependencies>
+  <name>Solmix :: wmix :: Karaf Features</name>
 </project>

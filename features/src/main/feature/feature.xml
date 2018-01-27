@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <features name="wmix-features-${project.version}" xmlns="http://karaf.apache.org/xmlns/features/v1.4.0">
-	<repository>mvn:org.solmix.karaf.features/solmix-services-features/${solmix.version}/xml/features</repository>
+	<repository>mvn:org.solmix.karaf.features/solmix-service-features/${solmix.version}/xml/features</repository>
 	<feature name="wmix-core" description="Wmix core" version="${project.version}">
 		<feature>http</feature>
 		<feature version="${solmix.version}">solmix-common-exchange</feature>
