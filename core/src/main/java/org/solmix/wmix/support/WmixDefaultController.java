@@ -163,7 +163,7 @@ public class WmixDefaultController implements Controller
         
         ex.put(Message.CONTENT_TYPE, contentType);
         ex.put(Message.ENCODING, msg.get(Message.ENCODING));
-        ex.put(Message.ACCEPT_CONTENT_TYPE, request.getHeader("Accept"));
+        ex.put(Message.ACCEPT_LANGUAGE, request.getHeader("Accept-Language"));
         
         msg.put(Message.QUERY_STRING, request.getQueryString());
         
