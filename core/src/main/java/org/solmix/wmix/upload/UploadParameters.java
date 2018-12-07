@@ -25,7 +25,9 @@ import java.util.Map;
 
 import org.solmix.commons.util.ArrayUtils;
 import org.solmix.commons.util.Assert;
+import org.solmix.commons.util.DataUtils;
 import org.solmix.commons.util.HumanReadableSize;
+import org.solmix.commons.util.StringUtils;
 import org.solmix.commons.util.SysInfoUtils;
 
 
@@ -183,7 +185,7 @@ public class UploadParameters implements UploadConfiguration
         mb.put("Maximum File Size", getFileSizeMax());
         mb.put("Threshold before Writing to File", getSizeThreshold());
         mb.put("Keep Form Field in Memory", isKeepFormFieldInMemory());
-        mb.put("File Name Key", getFileNameKey());
+        mb.put("File Name Key",StringUtils.arrayToString(getFileNameKey()));
 
         return mb.toString();
     }

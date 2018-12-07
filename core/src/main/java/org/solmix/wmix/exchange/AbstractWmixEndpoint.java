@@ -217,7 +217,7 @@ public abstract class AbstractWmixEndpoint extends InterceptorProviderAttrSuppor
             }
             this.transporter = (ServletTransporter) ts;
         }
-        getLogger().info("create transporter on {}", endpointInfo.getAddress());
+        getLogger().info("create {} transporter on {}",this.getClass().getName(), endpointInfo.getAddress());
         return this.transporter;
     }
 
