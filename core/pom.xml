@@ -3,7 +3,7 @@
   <parent>
     <groupId>org.solmix.wmix</groupId>
     <artifactId>wmix</artifactId>
-    <version>0.7.1</version>
+    <version>0.7.2-SNAPSHOT</version>
   </parent>
   <artifactId>wmix-core</artifactId>
   <dependencies>
@@ -47,7 +47,7 @@
 		<dependency>
 			<groupId>org.solmix.wmix</groupId>
 			<artifactId>wmix-test</artifactId>
-			<version>0.7.1</version>
+			<version>0.7.2-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
