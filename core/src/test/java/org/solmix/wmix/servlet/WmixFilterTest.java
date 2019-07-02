@@ -121,7 +121,7 @@ public class WmixFilterTest extends AbstractTests
     
     @Test
     public void componentPath_wrong() throws Exception {
-        File webInf = new File(TestUtils.srcdir, "app2/WEB-INF");
+        File webInf = new File(TestUtils.srcdir(), "app2/WEB-INF");
         File xml = new File(webInf, "web.xml");
 
         try {

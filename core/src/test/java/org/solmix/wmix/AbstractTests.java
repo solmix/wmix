@@ -73,7 +73,7 @@ public abstract class AbstractTests
 
     protected final void prepareWebClient(String xmlName, String contextPath) throws Exception {
         // Servlet container
-        File webInf = new File(TestUtils.srcdir, "WEB-INF");
+        File webInf = new File(TestUtils.srcdir(), "WEB-INF");
         File xml = new File(webInf, StringUtils.defaultIfEmpty(xmlName, "web.xml"));
 
         ServletRunner servletRunner = new PatchedServletRunner(xml, contextPath);
