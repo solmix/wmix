@@ -1,12 +1,12 @@
 package org.solmix.rest.annotation;
 
-public enum LookupType {
+public enum Lookup {
 	NEW("new"), 
 	CONTAINER("container");
 
 	private final String value;
 
-	LookupType(String v) {
+	Lookup(String v) {
 		value = v;
 	}
 
@@ -14,8 +14,8 @@ public enum LookupType {
 		return value;
 	}
 
-	public static LookupType fromValue(String v) {
-		for (LookupType c : LookupType.values()) {
+	public static Lookup fromValue(String v) {
+		for (Lookup c : Lookup.values()) {
 			if (c.value.equals(v)) {
 				return c;
 			}

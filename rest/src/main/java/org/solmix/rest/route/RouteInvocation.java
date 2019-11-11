@@ -11,7 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.solmix.commons.util.Reflection;
 import org.solmix.rest.annotation.API;
-import org.solmix.rest.annotation.LookupType;
+import org.solmix.rest.annotation.Lookup;
 import org.solmix.rest.exception.WebException;
 import org.solmix.rest.http.HttpRequest;
 import org.solmix.rest.http.HttpResponse;
@@ -100,10 +100,10 @@ public class RouteInvocation {
 
 	private <T> T getServiceInstance(Class<T> clazz) {
 		API api = clazz.getAnnotation(API.class);
-		LookupType lookup = api.lookup();
+		Lookup lookup = api.lookup();
 		boolean sharable = api.sharable();
 		T serviceInstance;
-		if (lookup == LookupType.CONTAINER) {
+		if (lookup == Lookup.CONTAINER) {
 			serviceInstance = container.getExtension(clazz);
 			if (serviceInstance != null) {
 				return serviceInstance;
