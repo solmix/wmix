@@ -40,6 +40,7 @@ public class RestEndpoint extends AbstractWmixEndpoint implements Endpoint {
 		reposiotry.setExcludePackages(this.excludePackages);
 		reposiotry.setComponentPath(component.getComponentPath());
 		reposiotry.init();
+		serviceFactory.setContainer(component.getContainer());
 
 	}
 

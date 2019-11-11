@@ -23,10 +23,16 @@ import org.solmix.rest.route.Route;
 import org.solmix.rest.route.RouteInvocation;
 import org.solmix.rest.route.RouteMatch;
 import org.solmix.rest.route.RouteRepository;
+import org.solmix.runtime.Container;
 import org.solmix.wmix.exchange.WmixMessage;
 
 public class RestInvoker implements Invoker {
 	private static final Logger LOG = LoggerFactory.getLogger(RestInvoker.class);
+
+	private Container container;
+	public RestInvoker(Container container) {
+		this.container=container;
+	}
 
 	@Override
 	public Object invoke(Exchange exchange, Object o) {
@@ -79,7 +85,7 @@ public class RestInvoker implements Invoker {
 			}
 
 			if (routeMatch != null) {
-				routeInvocation = new RouteInvocation(route, routeMatch);
+				routeInvocation = new RouteInvocation(route, routeMatch,container);
 			}
 		}
 		if (routeInvocation != null) {

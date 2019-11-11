@@ -14,6 +14,7 @@ public class RestServiceFactory extends AbstractServiceFactory {
 
     private Invoker invoker;
     private String address;
+    
     public RestServiceFactory(){
     }
     public RestServiceFactory(String address){
@@ -73,7 +74,7 @@ public class RestServiceFactory extends AbstractServiceFactory {
 
     @Override
     public Invoker createInvoker() {
-        return new RestInvoker();
+        return new RestInvoker(getContainer());
     }
 
 }

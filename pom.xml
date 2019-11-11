@@ -34,10 +34,10 @@
 	<url>https://github.com/solmix/wmix</url>
 	<description>wmix framework </description>
 	<modules>
-		<!-- <module>core</module> -->
 		<module>core</module>
 		<module>test</module>
 		<module>features</module>
+		<module>rest</module>
 	</modules>
 	<dependencyManagement>
 		<dependencies>
