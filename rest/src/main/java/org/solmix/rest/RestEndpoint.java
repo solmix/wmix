@@ -4,16 +4,22 @@ import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.solmix.commons.util.ClassLoaderUtils;
+import org.solmix.commons.util.ClassLoaderUtils.ClassLoaderHolder;
 import org.solmix.exchange.Endpoint;
 import org.solmix.exchange.Exchange;
 import org.solmix.exchange.Message;
 import org.solmix.exchange.Service;
 import org.solmix.exchange.Transporter;
+import org.solmix.exchange.data.DataProcessor;
 import org.solmix.exchange.interceptor.support.MessageSenderInterceptor;
 import org.solmix.exchange.processor.InFaultChainProcessor;
 import org.solmix.exchange.processor.OutFaultChainProcessor;
+import org.solmix.rest.interceptor.OutFaultInterceptor;
+import org.solmix.rest.interceptor.RestOutInterceptor;
 import org.solmix.rest.route.RouteRepository;
 import org.solmix.rest.route.RouteRepositoryImpl;
+import org.solmix.runtime.Container;
 import org.solmix.wmix.Component;
 import org.solmix.wmix.exchange.AbstractWmixEndpoint;
 import org.solmix.wmix.exchange.WmixMessage;
@@ -25,22 +31,42 @@ public class RestEndpoint extends AbstractWmixEndpoint implements Endpoint {
 	private RouteRepository reposiotry;
 	private Set<String> includePackages;
 	private Set<String> excludePackages;
-	
-	  private String encoding = Constant.encoding;
+	private String encoding = Constant.encoding;
 
 	public RestEndpoint() {
 		serviceFactory = new RestServiceFactory();
 	}
+	
+    @Override
+    protected void setContainer(Container container) {
+        super.setContainer(container);
+        DataProcessor dataProcessor = container.getExtension(DataProcessor.class);
+        serviceFactory.setDataProcessor(dataProcessor);
+    }
 
 	@Override
 	public void init(Component component) {
-		super.init(component);
-		reposiotry = new RouteRepositoryImpl();
-		reposiotry.setIncludePackages(this.includePackages);
-		reposiotry.setExcludePackages(this.excludePackages);
-		reposiotry.setComponentPath(component.getComponentPath());
-		reposiotry.init();
 		serviceFactory.setContainer(component.getContainer());
+		super.init(component);
+		ClassLoader classLoader = container.getExtension(ClassLoader.class);
+		ClassLoaderHolder orig = null;
+		if (classLoader != null) {
+			orig = ClassLoaderUtils.setThreadContextClassloader(classLoader);
+		}
+
+		try {
+			RouteRepositoryImpl reposiotry = new RouteRepositoryImpl();
+			reposiotry.setIncludePackages(this.includePackages);
+			reposiotry.setExcludePackages(this.excludePackages);
+			reposiotry.setComponentPath(component.getComponentPath());
+			reposiotry.setContainer(container);
+			reposiotry.init();
+			this.reposiotry=reposiotry;
+		} finally {
+			if (orig != null) {
+				orig.reset();
+			}
+		}
 
 	}
 
@@ -56,11 +82,11 @@ public class RestEndpoint extends AbstractWmixEndpoint implements Endpoint {
 	}
 
 	protected void prepareOutFaultInterceptors() {
-//		getOutFaultInterceptors().add(new OutFaultInterceptor());
+		getOutFaultInterceptors().add(new OutFaultInterceptor());
 	}
 
 	protected void prepareOutInterceptors() {
-//		getOutInterceptors().add(new SgtOutInterceptor());
+		getOutInterceptors().add(new RestOutInterceptor());
 	}
 
 	protected void prepareInInterceptors() {
@@ -75,7 +101,7 @@ public class RestEndpoint extends AbstractWmixEndpoint implements Endpoint {
 		Exchange ex = message.getExchange();
 		ex.put(RouteRepository.class, reposiotry);
 		ex.put(Transporter.class, getTransporter());
-		if(ex.get(Message.ENCODING)==null) {
+		if (ex.get(Message.ENCODING) == null) {
 			ex.put(Message.ENCODING, encoding);
 		}
 		getTransporter().invoke(message);

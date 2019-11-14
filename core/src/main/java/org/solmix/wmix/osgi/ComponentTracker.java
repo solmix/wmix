@@ -24,9 +24,9 @@ public class ComponentTracker extends ServiceTracker<Component, Component>
        String componentsName= components.getName();
        Object o=reference.getProperty(Component.COMP_BELONG_TO);
        Component component = context.getService(reference);
-       //加入components时初始化controller开始工作
-       component.getController().init(component);
        if(o!=null&&o.equals(componentsName)){
+    	   //加入components时初始化controller开始工作
+           component.getController().init(component);
            Iterator<Component> it= components.iterator();
            while(it.hasNext()){
                Component comp= it.next();

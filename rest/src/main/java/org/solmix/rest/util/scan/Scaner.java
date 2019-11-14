@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashSet;
@@ -16,7 +17,13 @@ import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+import org.osgi.framework.BundleContext;
+import org.solmix.commons.util.ClassLoaderUtils;
 import org.solmix.rest.http.Encoding;
+import org.solmix.rest.route.InitException;
+import org.solmix.runtime.Container;
+import org.solmix.runtime.resource.InputStreamResource;
+import org.solmix.runtime.resource.ResourceManager;
 
 /**
  * Created by ice on 14-12-19.
@@ -24,6 +31,8 @@ import org.solmix.rest.http.Encoding;
 public abstract class Scaner {
 
     protected Set<String> includePackages = new HashSet<String>();
+    
+    private Container c;
 
     public abstract boolean checkTarget(Class<?> clazz);
 
@@ -35,16 +44,21 @@ public abstract class Scaner {
      */
     public <T> Set<Class<? extends T>> scan() {
         Set<Class<? extends T>> classSet = new HashSet<Class<? extends T>>();
+        boolean isOSGI = c.getExtension(BundleContext.class)!=null;
         if (includePackages.size() > 0) {
             Set<String> classFileSet = new HashSet<String>();
             for (String classpath : includePackages) {
-                classFileSet.addAll(findFiles(classpath, "*.class"));
+            	if(isOSGI) {
+            		classFileSet.addAll(findFilesInOsgi(classpath));
+            	}else {
+            		classFileSet.addAll(findFiles(classpath, "*.class"));
+            	}
+                
             }
             for (String classFile : classFileSet) {
                 Class<?> classInFile = null;
                 try {
-//          classInFile = Class.forName(classFile);
-                    classInFile = Thread.currentThread().getContextClassLoader().loadClass(classFile);
+                    classInFile = ClassLoaderUtils.loadClass(classFile,Scaner.class);
                 } catch (ClassNotFoundException e) {
                     throw new ScanException(e.getMessage(), e);
                 }
@@ -57,7 +71,32 @@ public abstract class Scaner {
         return classSet;
     }
 
-    /**
+    private Collection<? extends String> findFilesInOsgi(String baseDirName) {
+    	 ResourceManager rm = c.getExtension(ResourceManager.class);
+         Set<String> classFiles = new HashSet<String>();
+         try {
+        	 baseDirName=baseDirName.replaceAll("\\.", "/");
+        	 StringBuilder pattern = new StringBuilder().append("classpath*:")
+        			 .append(baseDirName)
+        			 .append("/**/*.class");
+             InputStreamResource[] resources = rm.getResourcesAsStream(pattern.toString());
+             if (resources != null) {
+                 for (InputStreamResource resource : resources) {
+                	 if(resource.exists()) {
+                		 String uri = resource.getURI().toString();
+                         uri=  uri.substring(uri.indexOf(baseDirName), uri.indexOf(".class"));
+                         classFiles.add(uri.replaceAll("/", "."));
+                	 }
+                 }
+                 //bundle://176.3:0/org/solmix/homo/api/alert/Alert.class
+             }
+         } catch (IOException e) {
+             throw new InitException("lookup dataservice configuration file failed.", e);
+         }
+         return classFiles;
+	}
+
+	/**
      * 递归查找文件
      *
      * @param baseDirName    查找的文件夹路径
@@ -71,7 +110,7 @@ public abstract class Scaner {
         //判断class路径
         Enumeration<URL> baseURLs = null;
         try {
-            baseURLs =  Thread.currentThread().getContextClassLoader().getResources(baseDirName.replaceAll("\\.", "/"));
+            baseURLs =  ClassLoaderUtils.getResources(baseDirName.replaceAll("\\.", "/"),Scaner.class);
         } catch (IOException e) {
             throw new ScanException(e.getMessage(), e);
         }
@@ -218,6 +257,10 @@ public abstract class Scaner {
     	assertNotNull(classPackages, "Class packages could not be null.");
         Collections.addAll(includePackages, classPackages);
         return this;
+    }
+    public Scaner container(Container container) {
+    	this.c=container;
+    	return this;
     }
 
     public Scaner includePackages(Set<String> classPackages) {

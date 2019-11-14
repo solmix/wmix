@@ -18,6 +18,8 @@ import javax.servlet.ServletRequest;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
+import org.solmix.rest.Constant;
+
 /**
  * Date: 1/22/13
  * Time: 2:52 PM
@@ -215,7 +217,8 @@ public class HttpRequest extends AbstractRequest {
     }
 
     public String getCharacterEncoding() {
-        return request.getCharacterEncoding();
+        String encoding= request.getCharacterEncoding();
+        return encoding==null?Constant.encoding:encoding;
     }
 
     public void setCharacterEncoding(String encoding) throws UnsupportedEncodingException {
