@@ -12,6 +12,9 @@ public class RestPostTest extends AbstractWmixTests {
 	}
 
 	@Test
+	public void skip() {
+		
+	}
 	public void test() throws Exception{
 		  prepareServlet("rest");
 	        Assert.assertNotNull(component);

@@ -26,6 +26,9 @@ public class HttpResponse extends AbstractResponse<HttpServletResponse> {
         this.request = request;
     }
 
+    public HttpServletResponse getHttpServletResponse() {
+    	return this.response;
+    }
 
     protected void doSetStatus(HttpStatus httpStatus) {
         response.setStatus(httpStatus.getCode());

@@ -145,7 +145,7 @@ public class Route {
 			}
 		}
 
-		if (logger.isInfoEnabled()) {
+		if (logger.isDebugEnabled()) {
 			// print route
 			StringBuilder sb = new StringBuilder("\n\nBuild route ----------------- ")
 					.append(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()))
@@ -205,7 +205,7 @@ public class Route {
 			}
 
 			sb.append("\n--------------------------------------------------------------------------------\n");
-			logger.info(sb.toString());
+			logger.debug(sb.toString());
 		}
 	}
 

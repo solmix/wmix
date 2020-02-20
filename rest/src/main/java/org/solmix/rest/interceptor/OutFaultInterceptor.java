@@ -30,13 +30,12 @@ import org.solmix.exchange.Message;
 import org.solmix.exchange.interceptor.Fault;
 import org.solmix.exchange.interceptor.phase.Phase;
 import org.solmix.exchange.interceptor.phase.PhaseInterceptorSupport;
+import org.solmix.rest.exception.WebException;
 import org.solmix.rest.http.HttpStatus;
 import org.solmix.rest.route.RouteRepositoryImpl;
 import org.solmix.runtime.exception.InvokerException;
 import org.solmix.wmix.exchange.WmixMessage;
-import org.solmix.wmix.mapper.MapperException;
 import org.solmix.wmix.mapper.MapperService;
-import org.solmix.wmix.mapper.MapperTypeNotFoundException;
 
 /**
  * 
@@ -65,42 +64,62 @@ public class OutFaultInterceptor extends PhaseInterceptorSupport<Message> {
 	public void handleMessage(Message message) throws Fault {
 		final HttpServletResponse response = (HttpServletResponse) message.get(WmixMessage.HTTP_RESPONSE);
 		Exception e = message.getContent(Exception.class);
-		String error = handleException(e);
+		WebException we = getWebException(e, 0);
+
 		try {
-			response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.getCode(), error);
+			if (we != null) {
+				response.sendError(we.getStatus().getCode());
+			} else {
+				int error = handleException(e);
+				response.sendError(error);
+			}
+
 		} catch (IOException e2) {
 			LOG.warn("Error send error code:" + StringUtils.toString(e2));
 		}
 	}
 
-	private String handleException(Exception e) {
+	private WebException getWebException(Throwable e, int count) {
 		if (e == null) {
-			return "";
+			return null;
+		} else if (e instanceof WebException) {
+			return (WebException) e;
+		} else if (count < 10) {
+			return getWebException(e.getCause(), count++);
 		} else {
+			return null;
+		}
+	}
+
+	private int handleException(Exception e) {
+		int code = HttpStatus.INTERNAL_SERVER_ERROR.getCode();
+		if (e != null) {
 			if (e instanceof Fault) {
+				Integer c;
 				if (e.getCause() instanceof InvokerException && e.getCause().getCause() != null) {
-					return mapperString(e.getCause().getCause());
+					c = mapperString(e.getCause().getCause());
 				} else {
-					return mapperString(e.getCause());
+					c = mapperString(e.getCause());
+				}
+				if (c != null) {
+					code = c.intValue();
 				}
 			}
 		}
-		return StringUtils.toString(e);
+		return code;
 	}
 
-	private String mapperString(java.lang.Throwable e) {
+	private Integer mapperString(java.lang.Throwable e) {
 		if (mapperService != null) {
 			String exception = e.getClass().getName();
 			try {
-				return mapperService.map("exception", exception);
-			} catch (MapperTypeNotFoundException e1) {
-				return StringUtils.toString(e);
-			} catch (MapperException e1) {
-				return StringUtils.toString(e);
+				String code = mapperService.map("exception", exception);
+				return Integer.valueOf(code);
+			} catch (Exception e1) {
+
 			}
-		} else {
-			return StringUtils.toString(e);
 		}
+		return null;
 	}
 
 }

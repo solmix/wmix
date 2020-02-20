@@ -28,10 +28,14 @@ public class HttpRequest extends AbstractRequest {
     private final HttpServletRequest request;
     private Map<String, List<String>> queryParams;
 
+    
     public HttpRequest(HttpServletRequest request) {
         this.request = request;
     }
 
+    public HttpServletRequest getHttpServletRequest() {
+    	return this.request;
+    }
     private static String getCookieValue(Cookie[] cookies, String name) {
         if (cookies == null) {
             return null;
